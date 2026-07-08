@@ -1475,7 +1475,7 @@ let pvpIsHost = false;
 let pvpReady = false;
 
 // ===== 服务器地址配置（部署时修改此项）=====
-const PVP_SERVER_URL = "wss://你的服务器域名.com:443";  // 部署后替换为实际地址
+const PVP_SERVER_URL = "ws://192.168.1.129:8081";  // LAN版本，部署后改为 wss://你的域名
 
 function connectPvP() {
     myName = prompt("杈撳叆浣犵殑鍚嶅瓧:", myName) || myName;

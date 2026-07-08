@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "tarot-pvp-server",
   "version": "1.0.0",
   "description": "塔罗圣战 PvP WebSocket 游戏服务器",
@@ -7,7 +7,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "ws": "^8.16.0"
+    "ws": "^8.21.0"
   },
   "engines": {
     "node": ">=18.0.0"

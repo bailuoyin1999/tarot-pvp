@@ -160,7 +160,7 @@ wss.on("connection", (ws, req) => {
 
   console.log(`[+] ${clientIP} 连接 (ID: ${idCounter})`);
 
-  wsSend(ws, { type: "welcome", id: idCounter, message: "已连接到游戏服务器 });
+  wsSend(ws, { type: "welcome", id: idCounter, message: "已连接到游戏服务器" });
   broadcastLobbyAll();
   broadcastRooms();
 
@@ -235,7 +235,7 @@ wss.on("connection", (ws, req) => {
 
   ws.on("close", () => {
     const client = clients.get(ws);
-    console.log(`[-] ${client?.name || "??"} 敺开(`));
+    console.log(`[-] ${client?.name || "??"} 敺开`);
     if (client?.roomId) leaveRoom(ws);
     clients.delete(ws);
     broadcastLobbyAll();
