@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>濉旂綏鍦ｆ垬 路 PvP 鍙屼汉瀵规垬 (鏁堟灉淇鐗?</title>
+    <title>塔罗圣战 · PvP 双人对战 (效果修复版)</title>
     <style>
-        /* ===== 瀹屾暣鏍峰紡锛堜笌鍘熺増涓€鑷达級 ===== */
+        /* ===== 完整样式（与原版一致） ===== */
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
         body {
             font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
@@ -770,150 +770,150 @@
 </head>
 <body>
 <div id="app">
-    <!-- 鑻遍泟閫夋嫨 -->
+    <!-- 英雄选择 -->
     <div id="hero-select">
-        <h2>馃 閫夋嫨浣犵殑鑻遍泟</h2>
+        <h2>🧠 选择你的英雄</h2>
         <div style="text-align:center;margin-bottom:10px;">
-            <div class="coins-display">馃挵 閲戝竵锛?span id="totalCoins">0</span></div>
+            <div class="coins-display">💰 金币：<span id="totalCoins">0</span></div>
             <div>
-                <button class="btn-sm" id="dailyTasksBtn">馃搵 姣忔棩浠诲姟</button>
-                <button class="btn-sm" id="deckEditBtn">馃洜锔?鐗岀粍缂栬緫</button>
-                <button class="btn-sm" id="achievementsBtn">馃弳 鎴愬氨</button>
-                <button class="btn-sm" id="storyModeBtn">馃摉 鍓ф儏妯″紡</button>
+                <button class="btn-sm" id="dailyTasksBtn">📋 每日任务</button>
+                <button class="btn-sm" id="deckEditBtn">🛠️ 牌组编辑</button>
+                <button class="btn-sm" id="achievementsBtn">🏆 成就</button>
+                <button class="btn-sm" id="storyModeBtn">📖 剧情模式</button>
             </div>
         </div>
         <div class="mode-selector">
-            <button id="modeNormal" class="active">鈿旓笍 鏅€氬鎴?/button>
-            <button id="modeTower">馃彴 鐖妯″紡</button>
-            <button id="modePvP">馃懃 PvP瀵规垬</button>
+            <button id="modeNormal" class="active">⚔️ 普通对战</button>
+            <button id="modeTower">🏰 爬塔模式</button>
+            <button id="modePvP">👥 PvP对战</button>
         </div>
         <div class="hero-grid" id="heroGrid"></div>
-        <div id="selected-hero-name">馃懁 鏈€夋嫨</div>
-        <button id="confirm-btn" disabled>鈿旓笍 纭鍑烘垬</button>
+        <div id="selected-hero-name">👤 未选择</div>
+        <button id="confirm-btn" disabled>⚔️ 确认出战</button>
     </div>
 
-    <!-- 娓告垙鐣岄潰 -->
+    <!-- 游戏界面 -->
     <div id="game-container">
-        <button class="back-btn" id="backToMenuBtn">馃彔 杩斿洖瑙掕壊閫夋嫨</button>
-        <h1>馃 浜烘牸浠ｇ爜 路 濉旂綏鍦ｆ垬</h1>
-        <div id="turnDisplay" class="turn-indicator">鈿旓笍 鍑嗗寮€濮?/div>
+        <button class="back-btn" id="backToMenuBtn">🏠 返回角色选择</button>
+        <h1>🧠 人格代码 · 塔罗圣战</h1>
+        <div id="turnDisplay" class="turn-indicator">⚔️ 准备开始</div>
         <div class="tower-info" id="towerInfo" style="display:none;">
-            <span class="tower-stat">馃彴 绗?<span id="towerLayer">1</span> 灞?/span>
-            <span class="tower-stat">鉂わ笍 HP <span id="towerHp">30</span>/<span id="towerMaxHp">30</span></span>
-            <span class="tower-stat">馃洝锔?鎶ょ敳 <span id="towerArmor">0</span></span>
-            <span class="tower-stat">馃挵 閲戝竵 <span id="towerGold">0</span></span>
-            <span class="tower-stat">鈿?浼ゅ鍔犳垚 <span id="towerDamageBonus">0</span></span>
+            <span class="tower-stat">🏰 第 <span id="towerLayer">1</span> 层</span>
+            <span class="tower-stat">❤️ HP <span id="towerHp">30</span>/<span id="towerMaxHp">30</span></span>
+            <span class="tower-stat">🛡️ 护甲 <span id="towerArmor">0</span></span>
+            <span class="tower-stat">💰 金币 <span id="towerGold">0</span></span>
+            <span class="tower-stat">⚡ 伤害加成 <span id="towerDamageBonus">0</span></span>
         </div>
         <div class="battlefield">
-            <!-- 瀵规墜鍖哄煙 -->
+            <!-- 对手区域 -->
             <div id="opponentZone" class="player-zone opponent-zone">
                 <div class="zone-header">
-                    <img class="avatar" id="oppAvatar" src="images/default.jpg" alt="瀵规墜澶村儚" onerror="this.style.display='none'">
-                    <div class="hero-name" id="oppName">馃懁 瀵规墜 <span class="badge" id="oppHeroType">INTJ</span></div>
-                    <div class="info-right"><span id="oppCardCount" style="background:#2a3050;padding:2px 16px;border-radius:30px;">馃搳 宸插嚭鐗? 0</span></div>
+                    <img class="avatar" id="oppAvatar" src="images/default.jpg" alt="对手头像" onerror="this.style.display='none'">
+                    <div class="hero-name" id="oppName">👤 对手 <span class="badge" id="oppHeroType">INTJ</span></div>
+                    <div class="info-right"><span id="oppCardCount" style="background:#2a3050;padding:2px 16px;border-radius:30px;">📊 已出牌: 0</span></div>
                 </div>
                 <div class="stats">
-                    <div class="stat-item">鉂わ笍 HP <span id="oppHp">30</span>/<span id="oppMaxHp">30</span></div>
-                    <div class="stat-item">馃洝锔?鎶ょ敳 <span id="oppArmor">0</span></div>
+                    <div class="stat-item">❤️ HP <span id="oppHp">30</span>/<span id="oppMaxHp">30</span></div>
+                    <div class="stat-item">🛡️ 护甲 <span id="oppArmor">0</span></div>
                 </div>
                 <div class="hp-bar"><div class="hp-fill" id="oppHpFill" style="width:100%"></div></div>
-                <div class="hand-area" id="oppHand" style="min-height:60px; opacity:0.7; justify-content:center; align-items:center; color:#6a7a9a;">馃懁 瀵规墜鎵嬬墝锛堥殣钘忥級</div>
+                <div class="hand-area" id="oppHand" style="min-height:60px; opacity:0.7; justify-content:center; align-items:center; color:#6a7a9a;">👤 对手手牌（隐藏）</div>
             </div>
 
-            <!-- 鐜╁鍖哄煙 -->
+            <!-- 玩家区域 -->
             <div id="playerZone" class="player-zone">
                 <div class="zone-header">
-                    <img class="avatar" id="pAvatar" src="images/default.jpg" alt="鐜╁澶村儚" onerror="this.style.display='none'">
-                    <div class="hero-name" id="pName">馃 鐜╁ <span class="badge" id="pHeroType">INTJ</span></div>
+                    <img class="avatar" id="pAvatar" src="images/default.jpg" alt="玩家头像" onerror="this.style.display='none'">
+                    <div class="hero-name" id="pName">🧑 玩家 <span class="badge" id="pHeroType">INTJ</span></div>
                     <div class="info-right">
-                        <span id="pCardCount" style="background:#2a3050;padding:2px 16px;border-radius:30px;">馃搳 宸插嚭鐗? 0</span>
-                        <span id="heroLevelDisplay" style="background:#2a3050;padding:2px 16px;border-radius:30px;">猸?Lv.1</span>
+                        <span id="pCardCount" style="background:#2a3050;padding:2px 16px;border-radius:30px;">📊 已出牌: 0</span>
+                        <span id="heroLevelDisplay" style="background:#2a3050;padding:2px 16px;border-radius:30px;">⭐ Lv.1</span>
                     </div>
                 </div>
                 <div class="stats">
-                    <div class="stat-item">鉂わ笍 HP <span id="pHp">30</span>/<span id="pMaxHp">30</span></div>
-                    <div class="stat-item">馃洝锔?鎶ょ敳 <span id="pArmor">0</span></div>
-                    <div class="stat-item">鈿?瑙夐啋杩涘害 <span id="pAwakenProgress">0</span>/5</div>
-                    <div class="stat-item">馃挵 閲戝竵 <span id="currentCoins">0</span></div>
+                    <div class="stat-item">❤️ HP <span id="pHp">30</span>/<span id="pMaxHp">30</span></div>
+                    <div class="stat-item">🛡️ 护甲 <span id="pArmor">0</span></div>
+                    <div class="stat-item">⚡ 觉醒进度 <span id="pAwakenProgress">0</span>/5</div>
+                    <div class="stat-item">💰 金币 <span id="currentCoins">0</span></div>
                 </div>
                 <div class="hp-bar"><div class="hp-fill" id="pHpFill" style="width:100%"></div></div>
-                <div id="eventDisplay" class="event-display">馃尓锔?鐜锛氭棤</div>
-                <div id="taskDisplay" class="task-display">馃幆 浠诲姟锛氭棤</div>
-                <div class="element-display" id="elementDisplay">鈿?鍏冪礌杞ㄨ抗锛氭棤</div>
+                <div id="eventDisplay" class="event-display">🌪️ 环境：无</div>
+                <div id="taskDisplay" class="task-display">🎯 任务：无</div>
+                <div class="element-display" id="elementDisplay">⚡ 元素轨迹：无</div>
                 <div class="hand-area" id="pHand"></div>
-                <div class="btn-group"><button class="btn primary" id="btnAwaken" disabled>馃専 瑙夐啋鎶€ (闇€5寮?</button></div>
+                <div class="btn-group"><button class="btn primary" id="btnAwaken" disabled>🌟 觉醒技 (需5张)</button></div>
             </div>
         </div>
-        <div class="log-area" id="logBox"><div class="log-entry">馃幃 鐐瑰嚮鍗＄墝鍑虹墝锛屽鎵嬭嚜鍔ㄥ搷搴斻€?/div></div>
+        <div class="log-area" id="logBox"><div class="log-entry">🎮 点击卡牌出牌，对手自动响应。</div></div>
         <div id="game-over-overlay">
-            <div class="result" id="resultText">馃弳 鑳滃埄</div>
-            <div class="sub" id="resultSub">鐐瑰嚮涓嬫柟缁х画</div>
+            <div class="result" id="resultText">🏆 胜利</div>
+            <div class="sub" id="resultSub">点击下方继续</div>
             <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
-                <button id="next-btn">鈿旓笍 涓嬩竴鎶?/button>
-                <button id="continue-btn" style="display:none;">馃敟 缁х画鎸戞垬</button>
-                <button id="back-to-menu-btn">馃彔 杩斿洖閫夋嫨</button>
-                <button id="tower-btn" style="display:none;">馃彴 缁х画鐖</button>
+                <button id="next-btn">⚔️ 下一把</button>
+                <button id="continue-btn" style="display:none;">🔥 继续挑战</button>
+                <button id="back-to-menu-btn">🏠 返回选择</button>
+                <button id="tower-btn" style="display:none;">🏰 继续爬塔</button>
             </div>
         </div>
     </div>
 
-    <!-- 妯℃€佹 -->
+    <!-- 模态框 -->
     <div class="event-modal" id="eventModal">
         <div class="event-content">
-            <h2 id="eventTitle">馃巵 绁炵瀹濈</h2>
-            <p id="eventDesc">浣犲彂鐜颁簡涓€涓绉樼殑瀹濈锛?/p>
+            <h2 id="eventTitle">🎁 神秘宝箱</h2>
+            <p id="eventDesc">你发现了一个神秘的宝箱！</p>
             <div class="event-options" id="eventOptions"></div>
         </div>
     </div>
     <div id="deckModal" class="modal">
         <div class="modal-content">
-            <button class="close-btn" id="deckModalClose">鉁?/button>
-            <h2>馃洜锔?缂栬緫鐗岀粍锛堟渶澶?0寮狅級</h2>
-            <div class="deck-counter">宸查€夛細<span id="deckCount">0</span> / 30</div>
+            <button class="close-btn" id="deckModalClose">✕</button>
+            <h2>🛠️ 编辑牌组（最多30张）</h2>
+            <div class="deck-counter">已选：<span id="deckCount">0</span> / 30</div>
             <div id="deckEditorGrid" class="deck-editor-grid"></div>
-            <div style="margin-top:16px;"><button class="btn-deck-save" id="deckSaveBtn">馃捑 淇濆瓨鐗岀粍</button><button class="btn-deck-reset" id="deckResetBtn">馃攧 閲嶇疆涓洪粯璁?/button></div>
+            <div style="margin-top:16px;"><button class="btn-deck-save" id="deckSaveBtn">💾 保存牌组</button><button class="btn-deck-reset" id="deckResetBtn">🔄 重置为默认</button></div>
         </div>
     </div>
     <div id="dailyTasksModal" class="modal">
         <div class="modal-content">
-            <button class="close-btn" id="dailyTasksClose">鉁?/button>
-            <h2>馃搵 姣忔棩鎸戞垬</h2>
+            <button class="close-btn" id="dailyTasksClose">✕</button>
+            <h2>📋 每日挑战</h2>
             <div id="dailyTasksList" class="task-list"></div>
         </div>
     </div>
     <div id="storyModal" class="modal">
         <div class="modal-content">
-            <button class="close-btn" id="storyModalClose">鉁?/button>
-            <div class="story-title" id="storyTitle">馃摉 搴忕珷</div>
+            <button class="close-btn" id="storyModalClose">✕</button>
+            <div class="story-title" id="storyTitle">📖 序章</div>
             <div class="story-text" id="storyText">...</div>
             <div class="story-options" id="storyOptions"></div>
         </div>
     </div>
     <div id="storyDetailModal" class="modal">
         <div class="modal-content">
-            <button class="close-btn" id="storyDetailClose">鉁?/button>
+            <button class="close-btn" id="storyDetailClose">✕</button>
             <div class="hero-story-header">
-                <img id="storyDetailAvatar" src="images/default.jpg" alt="鑻遍泟澶村儚">
+                <img id="storyDetailAvatar" src="images/default.jpg" alt="英雄头像">
                 <div>
                     <div class="hero-story-title" id="storyDetailTitle">INTJ</div>
-                    <div class="hero-story-subtitle" id="storyDetailSubtitle">鎴樼暐瀹?路 寤虹瓚甯?/div>
+                    <div class="hero-story-subtitle" id="storyDetailSubtitle">战略家 · 建筑师</div>
                 </div>
             </div>
             <div class="hero-story-quote" id="storyDetailQuote">"..."</div>
-            <div class="hero-story-content" id="storyDetailContent">鏁呬簨鍐呭</div>
+            <div class="hero-story-content" id="storyDetailContent">故事内容</div>
             <div class="hero-story-tags" id="storyDetailTags"></div>
         </div>
     </div>
-    <div id="achievementPopup"><div id="achievementText">馃弳 鎴愬氨瑙ｉ攣锛?/div></div>
+    <div id="achievementPopup"><div id="achievementText">🏆 成就解锁！</div></div>
 </div>
 
 <script>
 // ============================================================
-//  瀹屾暣娓告垙浠ｇ爜 路 PvP 瀹炴椂瀵规垬  鈥?鍗＄墝鏁堟灉淇鐗?
-//  鏍稿績淇锛氬嚭鐗屾椂鏈湴鎵ц鏁堟灉锛屽啀鍚屾鐘舵€佺粰瀵规墜
+//  完整游戏代码 · PvP 实时对战  — 卡牌效果修复版
+//  核心修复：出牌时本地执行效果，再同步状态给对手
 // ============================================================
 
-// ---------- 宸ュ叿 ----------
+// ---------- 工具 ----------
 const ADV_MAP = { 'N':'S', 'S':'N', 'T':'F', 'F':'T', 'E':'I', 'I':'E' };
 function hasAdvantage(dims, hero) {
     if (!dims || !hero) return false;
@@ -927,19 +927,19 @@ function calcDamage(base, dims, defender) {
 }
 function shuffle(a) { for (let i=a.length-1;i>0;i--) { let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 
-// ---------- 鍏冪礌绯荤粺 ----------
+// ---------- 元素系统 ----------
 const ELEMENTS = {
-    gold: { name: '閲?, icon: '馃獧', color: '#D4A017', class: 'elem-gold' },
-    wood: { name: '鏈?, icon: '馃尶', color: '#4CAF50', class: 'elem-wood' },
-    water: { name: '姘?, icon: '馃挧', color: '#4A9BD9', class: 'elem-water' },
-    fire: { name: '鐏?, icon: '馃敟', color: '#FF6B35', class: 'elem-fire' },
-    earth: { name: '鍦?, icon: '馃', color: '#8D6E63', class: 'elem-earth' },
-    thunder: { name: '闆?, icon: '鈿?, color: '#FFD700', class: 'elem-thunder' },
-    wind: { name: '椋?, icon: '馃挩', color: '#81D4FA', class: 'elem-wind' },
-    ice: { name: '鍐?, icon: '鉂勶笍', color: '#80DEEA', class: 'elem-ice' },
-    light: { name: '鍏?, icon: '鈽€锔?, color: '#FFF176', class: 'elem-light' },
-    dark: { name: '鏆?, icon: '馃寫', color: '#666', class: 'elem-dark' },
-    moon: { name: '鏈?, icon: '馃寵', color: '#9C27B0', class: 'elem-moon' }
+    gold: { name: '金', icon: '🪙', color: '#D4A017', class: 'elem-gold' },
+    wood: { name: '木', icon: '🌿', color: '#4CAF50', class: 'elem-wood' },
+    water: { name: '水', icon: '💧', color: '#4A9BD9', class: 'elem-water' },
+    fire: { name: '火', icon: '🔥', color: '#FF6B35', class: 'elem-fire' },
+    earth: { name: '土', icon: '🪨', color: '#8D6E63', class: 'elem-earth' },
+    thunder: { name: '雷', icon: '⚡', color: '#FFD700', class: 'elem-thunder' },
+    wind: { name: '风', icon: '💨', color: '#81D4FA', class: 'elem-wind' },
+    ice: { name: '冰', icon: '❄️', color: '#80DEEA', class: 'elem-ice' },
+    light: { name: '光', icon: '☀️', color: '#FFF176', class: 'elem-light' },
+    dark: { name: '暗', icon: '🌑', color: '#666', class: 'elem-dark' },
+    moon: { name: '月', icon: '🌙', color: '#9C27B0', class: 'elem-moon' }
 };
 const ELEMENT_WEAKNESS = {
     gold: ['wood', 'ice'],
@@ -954,39 +954,39 @@ const ELEMENT_WEAKNESS = {
     dark: ['light', 'moon'],
     moon: ['light', 'dark']
 };
-function getElemIcon(elemKey) { return ELEMENTS[elemKey] ? ELEMENTS[elemKey].icon : '鉂?; }
+function getElemIcon(elemKey) { return ELEMENTS[elemKey] ? ELEMENTS[elemKey].icon : '❓'; }
 function getElemClass(elemKey) { return ELEMENTS[elemKey] ? ELEMENTS[elemKey].class : ''; }
-function getElemName(elemKey) { return ELEMENTS[elemKey] ? ELEMENTS[elemKey].name : '鏃?; }
+function getElemName(elemKey) { return ELEMENTS[elemKey] ? ELEMENTS[elemKey].name : '无'; }
 function isWeakness(attacker, defender) {
     if (!attacker || !defender) return false;
     return (ELEMENT_WEAKNESS[attacker] || []).includes(defender);
 }
 
-// ---------- 鍗＄墝妯℃澘 ----------
+// ---------- 卡牌模板 ----------
 const CARD_ELEMENTS = {
     'Ni': 'moon', 'Ne': 'wind', 'Si': 'earth', 'Se': 'fire',
     'Ti': 'ice', 'Te': 'thunder', 'Fi': 'water', 'Fe': 'light',
-    '璇祴': 'dark', '蹇冩祦': 'wind', '闈㈠叿': 'moon', '鏉犵簿': 'fire'
+    '误测': 'dark', '心流': 'wind', '面具': 'moon', '杠精': 'fire'
 };
-const SUIT_ELEMENTS = { '鏉冩潠': 'fire', '鍦ｆ澂': 'water', '瀹濆墤': 'thunder', '鏄熷竵': 'earth' };
+const SUIT_ELEMENTS = { '权杖': 'fire', '圣杯': 'water', '宝剑': 'thunder', '星币': 'earth' };
 const COURT_ELEMENTS = {
-    '鏉冩潠渚嶄粠': 'wind', '鏉冩潠楠戝＋': 'fire', '鏉冩潠鐜嬪悗': 'light', '鏉冩潠鍥界帇': 'gold',
-    '鍦ｆ澂渚嶄粠': 'water', '鍦ｆ澂楠戝＋': 'wood', '鍦ｆ澂鐜嬪悗': 'moon', '鍦ｆ澂鍥界帇': 'ice',
-    '瀹濆墤渚嶄粠': 'wind', '瀹濆墤楠戝＋': 'thunder', '瀹濆墤鐜嬪悗': 'dark', '瀹濆墤鍥界帇': 'light',
-    '鏄熷竵渚嶄粠': 'earth', '鏄熷竵楠戝＋': 'wood', '鏄熷竵鐜嬪悗': 'ice', '鏄熷竵鍥界帇': 'gold'
+    '权杖侍从': 'wind', '权杖骑士': 'fire', '权杖王后': 'light', '权杖国王': 'gold',
+    '圣杯侍从': 'water', '圣杯骑士': 'wood', '圣杯王后': 'moon', '圣杯国王': 'ice',
+    '宝剑侍从': 'wind', '宝剑骑士': 'thunder', '宝剑王后': 'dark', '宝剑国王': 'light',
+    '星币侍从': 'earth', '星币骑士': 'wood', '星币王后': 'ice', '星币国王': 'gold'
 };
 const MAJOR_ELEMENTS = {
-    '鎰氳€?: 'wood', '榄旀湳甯?: 'thunder', '濂崇キ鍙?: 'dark', '濂崇殗': 'wood',
-    '鐨囧笣': 'earth', '鏁欑殗': 'light', '鎭嬩汉': 'water', '鎴樿溅': 'fire',
-    '鍔涢噺': 'fire', '闅愯€?: 'moon', '鍛借繍涔嬭疆': 'thunder', '姝ｄ箟': 'light',
-    '鍊掑悐浜?: 'wind', '姝荤': 'dark', '鑺傚埗': 'water', '鎭堕瓟': 'fire',
-    '楂樺': 'thunder', '鏄熸槦': 'water', '鏈堜寒': 'moon', '澶槼': 'light',
-    '瀹″垽': 'ice', '涓栫晫': 'gold'
+    '愚者': 'wood', '魔术师': 'thunder', '女祭司': 'dark', '女皇': 'wood',
+    '皇帝': 'earth', '教皇': 'light', '恋人': 'water', '战车': 'fire',
+    '力量': 'fire', '隐者': 'moon', '命运之轮': 'thunder', '正义': 'light',
+    '倒吊人': 'wind', '死神': 'dark', '节制': 'water', '恶魔': 'fire',
+    '高塔': 'thunder', '星星': 'water', '月亮': 'moon', '太阳': 'light',
+    '审判': 'ice', '世界': 'gold'
 };
 const ZODIAC_ELEMENTS = {
-    '鐧界緤鍐查攱': 'fire', '閲戠墰澹佸瀿': 'earth', '鍙屽瓙骞诲奖': 'wind', '宸ㄨ煿娼睈': 'water',
-    '鐙瓙鐜嬫潈': 'light', '澶勫コ绮惧噯': 'thunder', '澶╃Г骞宠　': 'moon', '澶╄潕鏆楁潃': 'dark',
-    '灏勬墜娴佹槦': 'fire', '鎽╃警鍧氭瘏': 'earth', '姘寸摱闈╂柊': 'wind', '鍙岄奔骞绘ⅵ': 'water'
+    '白羊冲锋': 'fire', '金牛壁垒': 'earth', '双子幻影': 'wind', '巨蟹潮汐': 'water',
+    '狮子王权': 'light', '处女精准': 'thunder', '天秤平衡': 'moon', '天蝎暗杀': 'dark',
+    '射手流星': 'fire', '摩羯坚毅': 'earth', '水瓶革新': 'wind', '双鱼幻梦': 'water'
 };
 function getCardElement(cardName) {
     if (COURT_ELEMENTS[cardName]) return COURT_ELEMENTS[cardName];
@@ -999,72 +999,72 @@ function getCardElement(cardName) {
 }
 
 const BASE_CARDS = {
-    'Ni': { name:'Ni', dims:['N','I'], desc:'寮冨鎵?鐗岋紝閫犳垚3浼? },
-    'Ne': { name:'Ne', dims:['N','E'], desc:'妫€绱㈡儏鏅紝鎶?' },
-    'Si': { name:'Si', dims:['S','I'], desc:'鎭㈠2' },
-    'Se': { name:'Se', dims:['S','E'], desc:'閫犳垚2' },
-    'Ti': { name:'Ti', dims:['T','I'], desc:'娌夐粯瀵规墜' },
-    'Te': { name:'Te', dims:['T','E'], desc:'閫犳垚3锛孒P>20棰濆+2' },
-    'Fi': { name:'Fi', dims:['F','I'], desc:'鎶ょ敳=宸叉崯/2' },
-    'Fe': { name:'Fe', dims:['F','E'], desc:'鎭㈠3锛孒P<20棰濆+2' },
-    '璇祴': { name:'璇祴', dims:[], desc:'寮冨叏鎵嬶紝姣忓紶2浼? },
-    '蹇冩祦': { name:'蹇冩祦', dims:[], desc:'鎶?' },
-    '闈㈠叿': { name:'闈㈠叿', dims:[], desc:'涓嬫浼ゅ鍏嶇柅锛?5鎶ょ敳' },
-    '鏉犵簿': { name:'鏉犵簿', dims:[], desc:'瀵规墜涓嬪紶-3浼? }
+    'Ni': { name:'Ni', dims:['N','I'], desc:'弃对手1牌，造成3伤' },
+    'Ne': { name:'Ne', dims:['N','E'], desc:'检索情景，抽1' },
+    'Si': { name:'Si', dims:['S','I'], desc:'恢复2' },
+    'Se': { name:'Se', dims:['S','E'], desc:'造成2' },
+    'Ti': { name:'Ti', dims:['T','I'], desc:'沉默对手' },
+    'Te': { name:'Te', dims:['T','E'], desc:'造成3，HP>20额外+2' },
+    'Fi': { name:'Fi', dims:['F','I'], desc:'护甲=已损/2' },
+    'Fe': { name:'Fe', dims:['F','E'], desc:'恢复3，HP<20额外+2' },
+    '误测': { name:'误测', dims:[], desc:'弃全手，每张2伤' },
+    '心流': { name:'心流', dims:[], desc:'抽1' },
+    '面具': { name:'面具', dims:[], desc:'下次伤害免疫，+5护甲' },
+    '杠精': { name:'杠精', dims:[], desc:'对手下张-3伤' }
 };
 
 function generateTarotCards() {
     const cards = {};
     const majorEffects = {
-        '鎰氳€?: { desc:'寮冨鎵?鐗岋紝鎶?', fn:(p,o)=>{ o.discardRandom(); p.draw(); } },
-        '榄旀湳甯?: { desc:'閫犳垚2浼わ紝鍥炲3', fn:(p,o)=>{ o.takeDamage(2,false); p.heal(3); } },
-        '濂崇キ鍙?: { desc:'鎭㈠4锛屾矇榛樺鎵?, fn:(p,o)=>{ p.heal(4); o.silenceNextTurn = true; } },
-        '濂崇殗': { desc:'+3鎶ょ敳锛屾娊1', fn:(p,o)=>{ p.armor += 3; p.draw(); } },
-        '鐨囧笣': { desc:'閫犳垚4锛屾姢鐢?0棰濆+3', fn:(p,o)=>{ let d=4+(p.armor>0?3:0); o.takeDamage(d,false); } },
-        '鏁欑殗': { desc:'鎭㈠宸叉崯涓€鍗?, fn:(p,o)=>{ let lost=p.maxHp-p.hp; p.heal(Math.floor(lost/2)); } },
-        '鎭嬩汉': { desc:'澶嶅埗瀵规墜1鎵嬬墝', fn:(p,o)=>{ if(o.hand.length>0){ let idx=Math.floor(Math.random()*o.hand.length); p.hand.push({...o.hand[idx]}); } } },
-        '鎴樿溅': { desc:'閫犳垚3浼わ紝+2鎶ょ敳', fn:(p,o)=>{ o.takeDamage(3,false); p.armor += 2; } },
-        '鍔涢噺': { desc:'閫犳垚5浼わ紝涓嬪紶+3', fn:(p,o)=>{ o.takeDamage(5,false); p._passiveDamageBonus = 3; } },
-        '闅愯€?: { desc:'鎶?寮?', fn:(p,o)=>{ p.draw(); p.draw(); if(p.hand.length>0){ let idx=Math.floor(Math.random()*p.hand.length); let c=p.hand.splice(idx,1)[0]; p.discard.push(c); } } },
-        '鍛借繍涔嬭疆': { desc:'33%閫犳垚4浼?鎭㈠4/鎶?', fn:(p,o)=>{ let r=Math.random(); if(r<0.33) o.takeDamage(4,false); else if(r<0.66) p.heal(4); else { p.draw(); p.draw(); } } },
-        '姝ｄ箟': { desc:'閫犳垚(鍙屾柟HP/10)浼ゅ苟鍥炲绛夐噺', fn:(p,o)=>{ let d=Math.round((p.hp+o.hp)/10); o.takeDamage(d,false); p.heal(d); } },
-        '鍊掑悐浜?: { desc:'娌夐粯鑷繁锛屾仮澶?', fn:(p,o)=>{ p.silenceNextTurn = true; p.heal(4); } },
-        '姝荤': { desc:'閫犳垚5鐪熶激', fn:(p,o)=>{ o.takeDamage(5,true); } },
-        '鑺傚埗': { desc:'鎭㈠6锛?3鎶ょ敳', fn:(p,o)=>{ p.heal(6); p.armor += 3; } },
-        '鎭堕瓟': { desc:'閫犳垚3浼わ紝寮冨鎵?', fn:(p,o)=>{ o.takeDamage(3,false); o.discardRandom(); } },
-        '楂樺': { desc:'閫犳垚5浼わ紝娓呯┖鎶ょ敳', fn:(p,o)=>{ o.takeDamage(5,false); if(o.armor>0) o.armor=0; } },
-        '鏄熸槦': { desc:'鎭㈠5锛屾娊2', fn:(p,o)=>{ p.heal(5); p.draw(); p.draw(); } },
-        '鏈堜寒': { desc:'閫犳垚4锛屾矇榛樺鎵?, fn:(p,o)=>{ o.takeDamage(4,false); o.silenceNextTurn = true; } },
-        '澶槼': { desc:'鎭㈠5锛屾娊1', fn:(p,o)=>{ p.heal(5); p.draw(); } },
-        '瀹″垽': { desc:'閫犳垚4锛屽鎵婬P涓婇檺-2', fn:(p,o)=>{ o.takeDamage(4,false); o.maxHp = Math.max(1, o.maxHp - 2); if(o.hp > o.maxHp) o.hp = o.maxHp; } },
-        '涓栫晫': { desc:'婊¤锛?10鎶ょ敳', fn:(p,o)=>{ p.heal(p.maxHp-p.hp); p.armor += 10; } }
+        '愚者': { desc:'弃对手1牌，抽1', fn:(p,o)=>{ o.discardRandom(); p.draw(); } },
+        '魔术师': { desc:'造成2伤，回复3', fn:(p,o)=>{ o.takeDamage(2,false); p.heal(3); } },
+        '女祭司': { desc:'恢复4，沉默对手', fn:(p,o)=>{ p.heal(4); o.silenceNextTurn = true; } },
+        '女皇': { desc:'+3护甲，抽1', fn:(p,o)=>{ p.armor += 3; p.draw(); } },
+        '皇帝': { desc:'造成4，护甲>0额外+3', fn:(p,o)=>{ let d=4+(p.armor>0?3:0); o.takeDamage(d,false); } },
+        '教皇': { desc:'恢复已损一半', fn:(p,o)=>{ let lost=p.maxHp-p.hp; p.heal(Math.floor(lost/2)); } },
+        '恋人': { desc:'复制对手1手牌', fn:(p,o)=>{ if(o.hand.length>0){ let idx=Math.floor(Math.random()*o.hand.length); p.hand.push({...o.hand[idx]}); } } },
+        '战车': { desc:'造成3伤，+2护甲', fn:(p,o)=>{ o.takeDamage(3,false); p.armor += 2; } },
+        '力量': { desc:'造成5伤，下张+3', fn:(p,o)=>{ o.takeDamage(5,false); p._passiveDamageBonus = 3; } },
+        '隐者': { desc:'抽2弃1', fn:(p,o)=>{ p.draw(); p.draw(); if(p.hand.length>0){ let idx=Math.floor(Math.random()*p.hand.length); let c=p.hand.splice(idx,1)[0]; p.discard.push(c); } } },
+        '命运之轮': { desc:'33%造成4伤/恢复4/抽2', fn:(p,o)=>{ let r=Math.random(); if(r<0.33) o.takeDamage(4,false); else if(r<0.66) p.heal(4); else { p.draw(); p.draw(); } } },
+        '正义': { desc:'造成(双方HP/10)伤并回复等量', fn:(p,o)=>{ let d=Math.round((p.hp+o.hp)/10); o.takeDamage(d,false); p.heal(d); } },
+        '倒吊人': { desc:'沉默自己，恢复4', fn:(p,o)=>{ p.silenceNextTurn = true; p.heal(4); } },
+        '死神': { desc:'造成5真伤', fn:(p,o)=>{ o.takeDamage(5,true); } },
+        '节制': { desc:'恢复6，+3护甲', fn:(p,o)=>{ p.heal(6); p.armor += 3; } },
+        '恶魔': { desc:'造成3伤，弃对手1', fn:(p,o)=>{ o.takeDamage(3,false); o.discardRandom(); } },
+        '高塔': { desc:'造成5伤，清空护甲', fn:(p,o)=>{ o.takeDamage(5,false); if(o.armor>0) o.armor=0; } },
+        '星星': { desc:'恢复5，抽2', fn:(p,o)=>{ p.heal(5); p.draw(); p.draw(); } },
+        '月亮': { desc:'造成4，沉默对手', fn:(p,o)=>{ o.takeDamage(4,false); o.silenceNextTurn = true; } },
+        '太阳': { desc:'恢复5，抽1', fn:(p,o)=>{ p.heal(5); p.draw(); } },
+        '审判': { desc:'造成4，对手HP上限-2', fn:(p,o)=>{ o.takeDamage(4,false); o.maxHp = Math.max(1, o.maxHp - 2); if(o.hp > o.maxHp) o.hp = o.maxHp; } },
+        '世界': { desc:'满血，+10护甲', fn:(p,o)=>{ p.heal(p.maxHp-p.hp); p.armor += 10; } }
     };
-    const majorNames = ['鎰氳€?,'榄旀湳甯?,'濂崇キ鍙?,'濂崇殗','鐨囧笣','鏁欑殗','鎭嬩汉','鎴樿溅','鍔涢噺','闅愯€?,
-        '鍛借繍涔嬭疆','姝ｄ箟','鍊掑悐浜?,'姝荤','鑺傚埗','鎭堕瓟','楂樺','鏄熸槦','鏈堜寒','澶槼','瀹″垽','涓栫晫'];
+    const majorNames = ['愚者','魔术师','女祭司','女皇','皇帝','教皇','恋人','战车','力量','隐者',
+        '命运之轮','正义','倒吊人','死神','节制','恶魔','高塔','星星','月亮','太阳','审判','世界'];
     for (let name of majorNames) { cards[name] = { name, dims:[], desc: majorEffects[name].desc, effect: majorEffects[name].fn }; }
 
-    const suits = ['鏉冩潠','鍦ｆ澂','瀹濆墤','鏄熷竵'];
-    const numbers = ['涓€','浜?,'涓?,'鍥?,'浜?,'鍏?,'涓?,'鍏?,'涔?,'鍗?];
-    const court = ['渚嶄粠','楠戝＋','鐜嬪悗','鍥界帇'];
+    const suits = ['权杖','圣杯','宝剑','星币'];
+    const numbers = ['一','二','三','四','五','六','七','八','九','十'];
+    const court = ['侍从','骑士','王后','国王'];
     for (let suit of suits) {
         for (let i = 0; i < numbers.length; i++) {
             let num = i + 1, name = suit + numbers[i], desc = '', fn = null;
-            if (suit === '鏉冩潠') {
-                if (num <= 5) { desc = '閫犳垚'+num+'浼?; fn = (function(n){ return function(p,o){ o.takeDamage(n,false); }; })(num); }
-                else { let armor = num - 5; desc = '+'+armor+'鎶ょ敳'; fn = (function(n){ return function(p,o){ p.armor += n; }; })(armor); }
+            if (suit === '权杖') {
+                if (num <= 5) { desc = '造成'+num+'伤'; fn = (function(n){ return function(p,o){ o.takeDamage(n,false); }; })(num); }
+                else { let armor = num - 5; desc = '+'+armor+'护甲'; fn = (function(n){ return function(p,o){ p.armor += n; }; })(armor); }
                 cards[name] = { name, dims:[], desc, effect: fn };
-            } else if (suit === '鍦ｆ澂') { desc = '閫犳垚'+num+'浼?; fn = (function(n){ return function(p,o){ o.takeDamage(n,false); }; })(num); cards[name] = { name, dims:[], desc, effect: fn }; }
-            else if (suit === '瀹濆墤') { desc = '閫犳垚'+num+'浼?; fn = (function(n){ return function(p,o){ o.takeDamage(n,false); }; })(num); cards[name] = { name, dims:[], desc, effect: fn }; }
-            else if (suit === '鏄熷竵') { desc = '鎭㈠'+num+'琛€'; fn = (function(n){ return function(p,o){ p.heal(n); }; })(num); cards[name] = { name, dims:[], desc, effect: fn }; }
+            } else if (suit === '圣杯') { desc = '造成'+num+'伤'; fn = (function(n){ return function(p,o){ o.takeDamage(n,false); }; })(num); cards[name] = { name, dims:[], desc, effect: fn }; }
+            else if (suit === '宝剑') { desc = '造成'+num+'伤'; fn = (function(n){ return function(p,o){ o.takeDamage(n,false); }; })(num); cards[name] = { name, dims:[], desc, effect: fn }; }
+            else if (suit === '星币') { desc = '恢复'+num+'血'; fn = (function(n){ return function(p,o){ p.heal(n); }; })(num); cards[name] = { name, dims:[], desc, effect: fn }; }
         }
     }
     for (let suit of suits) {
         for (let c of court) {
             let name = suit + c, desc = '', fn = null;
-            if (c === '渚嶄粠') { desc = '鎶?锛屽鎵嬪緱1'; fn = function(p,o){ p.draw(); p.draw(); if(o.hand.length > 0){ let idx=Math.floor(Math.random()*o.hand.length); let card=o.hand.splice(idx,1)[0]; p.hand.push(card); } }; }
-            else if (c === '楠戝＋') { desc = '閫犳垚3锛屽鎵?2鎶ょ敳(鏃犲垯+2浼?'; fn = function(p,o){ let d=3; if(o.armor>0){ let absorb=Math.min(o.armor,2); o.armor-=absorb; } else { d+=2; } o.takeDamage(d,false); }; }
-            else if (c === '鐜嬪悗') { desc = '鎭㈠4锛屽純瀵规墜1'; fn = function(p,o){ p.heal(4); o.discardRandom(); }; }
-            else if (c === '鍥界帇') { desc = '閫犳垚4锛屾娊1'; fn = function(p,o){ o.takeDamage(4,false); p.draw(); }; }
+            if (c === '侍从') { desc = '抽2，对手得1'; fn = function(p,o){ p.draw(); p.draw(); if(o.hand.length > 0){ let idx=Math.floor(Math.random()*o.hand.length); let card=o.hand.splice(idx,1)[0]; p.hand.push(card); } }; }
+            else if (c === '骑士') { desc = '造成3，对手-2护甲(无则+2伤)'; fn = function(p,o){ let d=3; if(o.armor>0){ let absorb=Math.min(o.armor,2); o.armor-=absorb; } else { d+=2; } o.takeDamage(d,false); }; }
+            else if (c === '王后') { desc = '恢复4，弃对手1'; fn = function(p,o){ p.heal(4); o.discardRandom(); }; }
+            else if (c === '国王') { desc = '造成4，抽1'; fn = function(p,o){ o.takeDamage(4,false); p.draw(); }; }
             cards[name] = { name, dims:[], desc, effect: fn };
         }
     }
@@ -1075,20 +1075,20 @@ const TAROT_CARDS = generateTarotCards();
 function generateZodiacCards() {
     const cards = {};
     const zodiacEffects = {
-        '鐧界緤鍐查攱': { desc:'閫犳垚4浼?, fn:(p,o)=>{ o.takeDamage(4,false); } },
-        '閲戠墰澹佸瀿': { desc:'鑾峰緱5鎶ょ敳', fn:(p,o)=>{ p.armor += 5; } },
-        '鍙屽瓙骞诲奖': { desc:'澶嶅埗瀵规墜1鐗?, fn:(p,o)=>{ if(o.hand.length>0){ let idx=Math.floor(Math.random()*o.hand.length); p.hand.push({...o.hand[idx]}); } } },
-        '宸ㄨ煿娼睈': { desc:'鎭㈠4锛屽鎵?2鎶ょ敳', fn:(p,o)=>{ p.heal(4); if(o.armor>0) o.armor = Math.max(0, o.armor-2); } },
-        '鐙瓙鐜嬫潈': { desc:'閫犳垚4锛屾仮澶?', fn:(p,o)=>{ o.takeDamage(4,false); p.heal(2); } },
-        '澶勫コ绮惧噯': { desc:'閫犳垚3锛屾娊1', fn:(p,o)=>{ o.takeDamage(3,false); p.draw(); } },
-        '澶╃Г骞宠　': { desc:'鍙屾柟HP鍙栧钩鍧?, fn:(p,o)=>{ let avg = Math.round((p.hp + o.hp)/2); p.hp = avg; o.hp = avg; } },
-        '澶╄潕鏆楁潃': { desc:'3鐪熶激锛屽純瀵规墜1', fn:(p,o)=>{ o.takeDamage(3,true); o.discardRandom(); } },
-        '灏勬墜娴佹槦': { desc:'閫犳垚5浼?, fn:(p,o)=>{ o.takeDamage(5,false); } },
-        '鎽╃警鍧氭瘏': { desc:'+3鎶ょ敳锛岄€犳垚2', fn:(p,o)=>{ p.armor += 3; o.takeDamage(2,false); } },
-        '姘寸摱闈╂柊': { desc:'寮冨鎵?锛屾娊1', fn:(p,o)=>{ o.discardRandom(); p.draw(); } },
-        '鍙岄奔骞绘ⅵ': { desc:'鎭㈠4锛屾矇榛樺鎵?, fn:(p,o)=>{ p.heal(4); o.silenceNextTurn = true; } }
+        '白羊冲锋': { desc:'造成4伤', fn:(p,o)=>{ o.takeDamage(4,false); } },
+        '金牛壁垒': { desc:'获得5护甲', fn:(p,o)=>{ p.armor += 5; } },
+        '双子幻影': { desc:'复制对手1牌', fn:(p,o)=>{ if(o.hand.length>0){ let idx=Math.floor(Math.random()*o.hand.length); p.hand.push({...o.hand[idx]}); } } },
+        '巨蟹潮汐': { desc:'恢复4，对手-2护甲', fn:(p,o)=>{ p.heal(4); if(o.armor>0) o.armor = Math.max(0, o.armor-2); } },
+        '狮子王权': { desc:'造成4，恢复2', fn:(p,o)=>{ o.takeDamage(4,false); p.heal(2); } },
+        '处女精准': { desc:'造成3，抽1', fn:(p,o)=>{ o.takeDamage(3,false); p.draw(); } },
+        '天秤平衡': { desc:'双方HP取平均', fn:(p,o)=>{ let avg = Math.round((p.hp + o.hp)/2); p.hp = avg; o.hp = avg; } },
+        '天蝎暗杀': { desc:'3真伤，弃对手1', fn:(p,o)=>{ o.takeDamage(3,true); o.discardRandom(); } },
+        '射手流星': { desc:'造成5伤', fn:(p,o)=>{ o.takeDamage(5,false); } },
+        '摩羯坚毅': { desc:'+3护甲，造成2', fn:(p,o)=>{ p.armor += 3; o.takeDamage(2,false); } },
+        '水瓶革新': { desc:'弃对手1，抽1', fn:(p,o)=>{ o.discardRandom(); p.draw(); } },
+        '双鱼幻梦': { desc:'恢复4，沉默对手', fn:(p,o)=>{ p.heal(4); o.silenceNextTurn = true; } }
     };
-    const zodiacNames = ['鐧界緤鍐查攱','閲戠墰澹佸瀿','鍙屽瓙骞诲奖','宸ㄨ煿娼睈','鐙瓙鐜嬫潈','澶勫コ绮惧噯','澶╃Г骞宠　','澶╄潕鏆楁潃','灏勬墜娴佹槦','鎽╃警鍧氭瘏','姘寸摱闈╂柊','鍙岄奔骞绘ⅵ'];
+    const zodiacNames = ['白羊冲锋','金牛壁垒','双子幻影','巨蟹潮汐','狮子王权','处女精准','天秤平衡','天蝎暗杀','射手流星','摩羯坚毅','水瓶革新','双鱼幻梦'];
     for (let name of zodiacNames) {
         cards[name] = { name, dims: [], desc: zodiacEffects[name].desc, effect: zodiacEffects[name].fn, element: ZODIAC_ELEMENTS[name] || null };
     }
@@ -1101,54 +1101,54 @@ for (let name in CARD_TEMPLATES) {
     CARD_TEMPLATES[name].element = getCardElement(name);
 }
 
-// ---------- 28浣嶈嫳闆?----------
+// ---------- 28位英雄 ----------
 const HEROES = {
-    'INTJ': { name:'INTJ', hp:28, passive:'棣栧紶鍔熻兘鐗?2浼?, awaken:'寮?鐗岋紝3鐪熶激', fn:(p,o)=>{ o.discardRandom(); o.takeDamage(3,true); }, passiveFn:(p,o,c)=>{ if(c && c.dims && p.cardsPlayedThisTurn===1){ let extra=2+(p._heroLevel||0); o.takeDamage(extra,false); addLog('鈿?INTJ琚姩锛?'+extra+'浼?); } } },
-    'INTP': { name:'INTP', hp:27, passive:'棣栧紶濉旂綏鐗屾娊1', awaken:'澶嶅埗瀵规墜2鐗?, fn:(p,o)=>{ if(o.hand.length>0){ let idx1=Math.floor(Math.random()*o.hand.length); p.hand.push({...o.hand[idx1]}); if(o.hand.length>1){ let idx2; do{ idx2=Math.floor(Math.random()*o.hand.length); }while(idx2===idx1); p.hand.push({...o.hand[idx2]}); } } }, passiveFn:(p,o,c)=>{ if(c && c.name && Object.keys(TAROT_CARDS).includes(c.name) && p.cardsPlayedThisTurn===1){ p.draw(); addLog('馃 INTP鎶?'); } } },
-    'ENTJ': { name:'ENTJ', hp:30, passive:'鐩爣HP<50%棰濆+2', awaken:'閫犳垚4锛孒P>25+2', fn:(p,o)=>{ let d=4+(o.hp>25?2:0); o.takeDamage(d,false); }, passiveFn:(p,o,c)=>{ if(o && o.hp < o.maxHp*0.5){ let extra=2+(p._heroLevel||0); o.takeDamage(extra,false); addLog('鈿旓笍 ENTJ +'+extra); } } },
-    'ENTP': { name:'ENTP', hp:29, passive:'鎯呮櫙鐗屽悗寮冨鎵?', awaken:'寮冩墍鏈夋墜鐗岋紝姣忓紶1浼?, fn:(p,o)=>{ let cnt=o.hand.length; while(o.hand.length>0) o.discard.push(o.hand.pop()); o.takeDamage(cnt,false); }, passiveFn:(p,o,c)=>{ if(c && c.name && ['璇祴','蹇冩祦','闈㈠叿','鏉犵簿'].includes(c.name) && o){ let c2=o.discardRandom(); if(c2) addLog('馃寑 ENTP寮?+c2.name); } } },
-    'INFJ': { name:'INFJ', hp:26, passive:'棣栨鍙楀嚮+2鎶ょ敳', awaken:'娌夐粯瀵规墜锛屾娊2', fn:(p,o)=>{ o.silenceNextTurn=true; p.draw(); p.draw(); }, passiveFn:()=>{} },
-    'INFP': { name:'INFP', hp:26, passive:'鍥炲悎寮€濮婬P<50%鎭㈠2', awaken:'鎭㈠宸叉崯涓€鍗婏紝鎶?', fn:(p,o)=>{ let lost=p.maxHp-p.hp; p.heal(Math.floor(lost/2)); p.draw(); }, passiveFn:()=>{} },
-    'ENFJ': { name:'ENFJ', hp:30, passive:'瑙夐啋鍚庢娊2', awaken:'鎭㈠5锛岄€犳垚3', fn:(p,o)=>{ p.heal(5); o.takeDamage(3,false); }, passiveFn:()=>{} },
-    'ENFP': { name:'ENFP', hp:32, passive:'娌荤枟+2', awaken:'妫€绱?寮犳儏鏅墝', fn:(p,o)=>{ let found=[]; for(let i=0;i<p.deck.length && found.length<2;i++){ if(['璇祴','蹇冩祦','闈㈠叿','鏉犵簿'].includes(p.deck[i].name)){ found.push(p.deck.splice(i,1)[0]); i--; } } for(let f of found) p.hand.push(f); addLog('馃攳 妫€绱㈠埌 '+found.length+'寮犳儏鏅?); }, passiveFn:()=>{} },
-    'ISTJ': { name:'ISTJ', hp:34, passive:'棣栧紶鍔熻兘鐗?2鎶ょ敳', awaken:'+4鎶ょ敳锛屾仮澶?', fn:(p,o)=>{ p.armor+=4; p.heal(2); }, passiveFn:(p,o,c)=>{ if(c && c.dims && p.cardsPlayedThisTurn===1){ let extra=2+(p._heroLevel||0); p.armor+=extra; addLog('馃洝锔?ISTJ+'+extra+'鎶ょ敳'); } } },
-    'ISFJ': { name:'ISFJ', hp:33, passive:'鍙楀嚮+2鎶ょ敳(闄?)', awaken:'鎭㈠6锛屾竻鍑忕泭', fn:(p,o)=>{ p.heal(6); p.silenceNextTurn=false; p.nextCardDmgReduce=0; }, passiveFn:()=>{} },
-    'ESTJ': { name:'ESTJ', hp:35, passive:'棣栨閫犳垚浼ゅ+1', awaken:'閫犳垚3锛屽純瀵规墜1', fn:(p,o)=>{ o.takeDamage(3,false); o.discardRandom(); }, passiveFn:(p,o,c)=>{ if(p.cardsPlayedThisTurn===1 && c && !Object.keys(TAROT_CARDS).includes(c.name) && !Object.keys(ZODIAC_CARDS).includes(c.name)){ let extra=1+(p._heroLevel||0); o.takeDamage(extra,false); addLog('鈿?ESTJ+'+extra); } } },
-    'ESFJ': { name:'ESFJ', hp:30, passive:'鍙楀嚮+1鎶ょ敳', awaken:'鎭㈠10锛屾娊2', fn:(p,o)=>{ p.heal(10); p.draw(); p.draw(); }, passiveFn:()=>{} },
-    'ISTP': { name:'ISTP', hp:35, passive:'棣栧紶濉旂綏寮冨鎵?', awaken:'閫犳垚3锛岀Щ闄ゅ鐩?, fn:(p,o)=>{ o.takeDamage(3,false); o.buffs={}; }, passiveFn:(p,o,c)=>{ if(c && c.name && Object.keys(TAROT_CARDS).includes(c.name) && p.cardsPlayedThisTurn===1 && o){ let c2=o.discardRandom(); if(c2) addLog('馃敡 ISTP寮?+c2.name); } } },
-    'ISFP': { name:'ISFP', hp:32, passive:'棣栧紶鎯呮櫙鎭㈠3', awaken:'+5鎶ょ敳锛屾娊1', fn:(p,o)=>{ p.armor+=5; p.draw(); }, passiveFn:(p,o,c)=>{ if(c && c.name && ['璇祴','蹇冩祦','闈㈠叿','鏉犵簿'].includes(c.name) && p.cardsPlayedThisTurn===1){ let extra=3+(p._heroLevel||0); p.heal(extra); addLog('馃挌 ISFP鎭㈠'+extra); } } },
-    'ESTP': { name:'ESTP', hp:34, passive:'鐩爣HP>20棰濆+2', awaken:'閫犳垚5锛屽伔鍙?鐗?, fn:(p,o)=>{ o.takeDamage(5,false); let c=o.discardRandom(); if(c){ p.hand.push(c); addLog('馃儚 鍋峰彇浜?+c.name); } }, passiveFn:(p,o,c)=>{ if(o && o.hp>20){ let extra=2+(p._heroLevel||0); o.takeDamage(extra,false); addLog('鈿?ESTP+'+extra); } } },
-    'ESFP': { name:'ESFP', hp:30, passive:'鍥炲悎寮€濮嬫墜鐗?3鎶?', awaken:'閫犳垚4', fn:(p,o)=>{ o.takeDamage(4,false); }, passiveFn:()=>{} },
-    '鐧界緤搴?: { name:'鐧界緤搴?, hp:32, passive:'姣忓洖鍚堥娆′激瀹?2', awaken:'鐙傛毚绐佽', fn:(p,o)=>{ o.takeDamage(5,false); p.armor += 2; }, passiveFn:(p,o,c)=>{ if(p.cardsPlayedThisTurn===1 && c){ let extra=2+(p._heroLevel||0); o.takeDamage(extra,false); addLog('馃敟 鐧界緤搴ц鍔細+'+extra+'浼?); } } },
-    '閲戠墰搴?: { name:'閲戠墰搴?, hp:38, passive:'姣忓洖鍚堥娆″彈鍑?2浼?, awaken:'閾佸闃插尽', fn:(p,o)=>{ p.armor += 8; p.heal(3); }, passiveFn:()=>{} },
-    '鍙屽瓙搴?: { name:'鍙屽瓙搴?, hp:28, passive:'姣忓洖鍚堝彲鍑?寮犵墝', awaken:'鍙岄噸鏂芥硶', fn:(p,o)=>{ if(o.hand.length>0){ let idx=Math.floor(Math.random()*o.hand.length); let card={...o.hand[idx]}; if(card.effect){ card.effect(p,o); } else { p.resolveEffect(card, o); } } }, passiveFn:()=>{} },
-    '宸ㄨ煿搴?: { name:'宸ㄨ煿搴?, hp:34, passive:'鍥炲悎寮€濮嬫仮澶?HP', awaken:'娼睈涔嬪姏', fn:(p,o)=>{ p.heal(8); if(o.armor>0) o.armor = Math.max(0, o.armor-3); }, passiveFn:()=>{} },
-    '鐙瓙搴?: { name:'鐙瓙搴?, hp:36, passive:'HP>50%鏃朵激瀹?2', awaken:'鐜嬭€呭鍒?, fn:(p,o)=>{ o.takeDamage(6,false); p.heal(3); }, passiveFn:(p,o,c)=>{ if(p.hp > p.maxHp*0.5){ let extra=2+(p._heroLevel||0); o.takeDamage(extra,false); addLog('馃 鐙瓙搴ц鍔細+'+extra+'浼?); } } },
-    '澶勫コ搴?: { name:'澶勫コ搴?, hp:30, passive:'姣忓紶鐗屾晥鏋?1', awaken:'瀹岀編鎵ц', fn:(p,o)=>{ p._passiveDamageBonus = (p._passiveDamageBonus||0) + 3; addLog('馃搻 澶勫コ搴ц閱掞細浼ゅ+3'); }, passiveFn:()=>{} },
-    '澶╃Г搴?: { name:'澶╃Г搴?, hp:32, passive:'鍙屾柟HP鍧囪　鏃舵娊2', awaken:'骞宠　瑁佸喅', fn:(p,o)=>{ let avg = Math.round((p.hp + o.hp)/2); p.hp = avg; o.hp = avg; p.draw(); p.draw(); }, passiveFn:(p,o,c)=>{ if(Math.abs(p.hp - o.hp) <= 3){ p.draw(); p.draw(); addLog('鈿栵笍 澶╃Г搴ц鍔細HP鍧囪　锛屾娊2'); } } },
-    '澶╄潕搴?: { name:'澶╄潕搴?, hp:30, passive:'瀵瑰彈浼ょ洰鏍囦激瀹?3', awaken:'鏆楀奖鍒烘潃', fn:(p,o)=>{ o.takeDamage(4,true); let c=o.discardRandom(); if(c){ p.hand.push(c); addLog('馃 鍋峰彇浜?+c.name); } }, passiveFn:(p,o,c)=>{ if(o && o.hp < o.maxHp){ let extra=3+(p._heroLevel||0); o.takeDamage(extra,false); addLog('馃 澶╄潕搴ц鍔細+'+extra+'浼?); } } },
-    '灏勬墜搴?: { name:'灏勬墜搴?, hp:34, passive:'濉旂綏鐗屼激瀹?2', awaken:'娴佹槦灏勬墜', fn:(p,o)=>{ o.takeDamage(5,false); p.draw(); }, passiveFn:(p,o,c)=>{ if(c && c.name && Object.keys(TAROT_CARDS).includes(c.name)){ let extra=2+(p._heroLevel||0); o.takeDamage(extra,false); addLog('馃徆 灏勬墜搴ц鍔細+'+extra+'浼?); } } },
-    '鎽╃警搴?: { name:'鎽╃警搴?, hp:36, passive:'鎶ょ敳>0鏃朵激瀹?2', awaken:'澶у湴澹佸瀿', fn:(p,o)=>{ p.armor += 5; o.takeDamage(3,false); }, passiveFn:(p,o,c)=>{ if(p.armor > 0){ let extra=2+(p._heroLevel||0); o.takeDamage(extra,false); addLog('馃悙 鎽╃警搴ц鍔細+'+extra+'浼?); } } },
-    '姘寸摱搴?: { name:'姘寸摱搴?, hp:28, passive:'姣忓洖鍚堥寮犵墝鎶?', awaken:'闈╂柊椋庢毚', fn:(p,o)=>{ for(let i=0; i<2 && o.hand.length>0; i++){ o.discardRandom(); } p.draw(); p.draw(); }, passiveFn:(p,o,c)=>{ if(p.cardsPlayedThisTurn===1){ p.draw(); addLog('馃徍 姘寸摱搴ц鍔細鎶?'); } } },
-    '鍙岄奔搴?: { name:'鍙岄奔搴?, hp:30, passive:'娌荤枟閲?3', awaken:'骞绘ⅵ涔嬪', fn:(p,o)=>{ o.silenceNextTurn = true; p.heal(5); p.draw(); }, passiveFn:()=>{} }
+    'INTJ': { name:'INTJ', hp:28, passive:'首张功能牌+2伤', awaken:'弃1牌，3真伤', fn:(p,o)=>{ o.discardRandom(); o.takeDamage(3,true); }, passiveFn:(p,o,c)=>{ if(c && c.dims && p.cardsPlayedThisTurn===1){ let extra=2+(p._heroLevel||0); o.takeDamage(extra,false); addLog('⚡ INTJ被动：+'+extra+'伤'); } } },
+    'INTP': { name:'INTP', hp:27, passive:'首张塔罗牌抽1', awaken:'复制对手2牌', fn:(p,o)=>{ if(o.hand.length>0){ let idx1=Math.floor(Math.random()*o.hand.length); p.hand.push({...o.hand[idx1]}); if(o.hand.length>1){ let idx2; do{ idx2=Math.floor(Math.random()*o.hand.length); }while(idx2===idx1); p.hand.push({...o.hand[idx2]}); } } }, passiveFn:(p,o,c)=>{ if(c && c.name && Object.keys(TAROT_CARDS).includes(c.name) && p.cardsPlayedThisTurn===1){ p.draw(); addLog('🧠 INTP抽1'); } } },
+    'ENTJ': { name:'ENTJ', hp:30, passive:'目标HP<50%额外+2', awaken:'造成4，HP>25+2', fn:(p,o)=>{ let d=4+(o.hp>25?2:0); o.takeDamage(d,false); }, passiveFn:(p,o,c)=>{ if(o && o.hp < o.maxHp*0.5){ let extra=2+(p._heroLevel||0); o.takeDamage(extra,false); addLog('⚔️ ENTJ +'+extra); } } },
+    'ENTP': { name:'ENTP', hp:29, passive:'情景牌后弃对手1', awaken:'弃所有手牌，每张1伤', fn:(p,o)=>{ let cnt=o.hand.length; while(o.hand.length>0) o.discard.push(o.hand.pop()); o.takeDamage(cnt,false); }, passiveFn:(p,o,c)=>{ if(c && c.name && ['误测','心流','面具','杠精'].includes(c.name) && o){ let c2=o.discardRandom(); if(c2) addLog('🌀 ENTP弃'+c2.name); } } },
+    'INFJ': { name:'INFJ', hp:26, passive:'首次受击+2护甲', awaken:'沉默对手，抽2', fn:(p,o)=>{ o.silenceNextTurn=true; p.draw(); p.draw(); }, passiveFn:()=>{} },
+    'INFP': { name:'INFP', hp:26, passive:'回合开始HP<50%恢复2', awaken:'恢复已损一半，抽1', fn:(p,o)=>{ let lost=p.maxHp-p.hp; p.heal(Math.floor(lost/2)); p.draw(); }, passiveFn:()=>{} },
+    'ENFJ': { name:'ENFJ', hp:30, passive:'觉醒后抽2', awaken:'恢复5，造成3', fn:(p,o)=>{ p.heal(5); o.takeDamage(3,false); }, passiveFn:()=>{} },
+    'ENFP': { name:'ENFP', hp:32, passive:'治疗+2', awaken:'检索2张情景牌', fn:(p,o)=>{ let found=[]; for(let i=0;i<p.deck.length && found.length<2;i++){ if(['误测','心流','面具','杠精'].includes(p.deck[i].name)){ found.push(p.deck.splice(i,1)[0]); i--; } } for(let f of found) p.hand.push(f); addLog('🔍 检索到 '+found.length+'张情景'); }, passiveFn:()=>{} },
+    'ISTJ': { name:'ISTJ', hp:34, passive:'首张功能牌+2护甲', awaken:'+4护甲，恢复2', fn:(p,o)=>{ p.armor+=4; p.heal(2); }, passiveFn:(p,o,c)=>{ if(c && c.dims && p.cardsPlayedThisTurn===1){ let extra=2+(p._heroLevel||0); p.armor+=extra; addLog('🛡️ ISTJ+'+extra+'护甲'); } } },
+    'ISFJ': { name:'ISFJ', hp:33, passive:'受击+2护甲(限1)', awaken:'恢复6，清减益', fn:(p,o)=>{ p.heal(6); p.silenceNextTurn=false; p.nextCardDmgReduce=0; }, passiveFn:()=>{} },
+    'ESTJ': { name:'ESTJ', hp:35, passive:'首次造成伤害+1', awaken:'造成3，弃对手1', fn:(p,o)=>{ o.takeDamage(3,false); o.discardRandom(); }, passiveFn:(p,o,c)=>{ if(p.cardsPlayedThisTurn===1 && c && !Object.keys(TAROT_CARDS).includes(c.name) && !Object.keys(ZODIAC_CARDS).includes(c.name)){ let extra=1+(p._heroLevel||0); o.takeDamage(extra,false); addLog('⚡ ESTJ+'+extra); } } },
+    'ESFJ': { name:'ESFJ', hp:30, passive:'受击+1护甲', awaken:'恢复10，抽2', fn:(p,o)=>{ p.heal(10); p.draw(); p.draw(); }, passiveFn:()=>{} },
+    'ISTP': { name:'ISTP', hp:35, passive:'首张塔罗弃对手1', awaken:'造成3，移除增益', fn:(p,o)=>{ o.takeDamage(3,false); o.buffs={}; }, passiveFn:(p,o,c)=>{ if(c && c.name && Object.keys(TAROT_CARDS).includes(c.name) && p.cardsPlayedThisTurn===1 && o){ let c2=o.discardRandom(); if(c2) addLog('🔧 ISTP弃'+c2.name); } } },
+    'ISFP': { name:'ISFP', hp:32, passive:'首张情景恢复3', awaken:'+5护甲，抽1', fn:(p,o)=>{ p.armor+=5; p.draw(); }, passiveFn:(p,o,c)=>{ if(c && c.name && ['误测','心流','面具','杠精'].includes(c.name) && p.cardsPlayedThisTurn===1){ let extra=3+(p._heroLevel||0); p.heal(extra); addLog('💚 ISFP恢复'+extra); } } },
+    'ESTP': { name:'ESTP', hp:34, passive:'目标HP>20额外+2', awaken:'造成5，偷取1牌', fn:(p,o)=>{ o.takeDamage(5,false); let c=o.discardRandom(); if(c){ p.hand.push(c); addLog('🃏 偷取了'+c.name); } }, passiveFn:(p,o,c)=>{ if(o && o.hp>20){ let extra=2+(p._heroLevel||0); o.takeDamage(extra,false); addLog('⚡ ESTP+'+extra); } } },
+    'ESFP': { name:'ESFP', hp:30, passive:'回合开始手牌>3抽1', awaken:'造成4', fn:(p,o)=>{ o.takeDamage(4,false); }, passiveFn:()=>{} },
+    '白羊座': { name:'白羊座', hp:32, passive:'每回合首次伤害+2', awaken:'狂暴突袭', fn:(p,o)=>{ o.takeDamage(5,false); p.armor += 2; }, passiveFn:(p,o,c)=>{ if(p.cardsPlayedThisTurn===1 && c){ let extra=2+(p._heroLevel||0); o.takeDamage(extra,false); addLog('🔥 白羊座被动：+'+extra+'伤'); } } },
+    '金牛座': { name:'金牛座', hp:38, passive:'每回合首次受击-2伤', awaken:'铁壁防御', fn:(p,o)=>{ p.armor += 8; p.heal(3); }, passiveFn:()=>{} },
+    '双子座': { name:'双子座', hp:28, passive:'每回合可出2张牌', awaken:'双重施法', fn:(p,o)=>{ if(o.hand.length>0){ let idx=Math.floor(Math.random()*o.hand.length); let card={...o.hand[idx]}; if(card.effect){ card.effect(p,o); } else { p.resolveEffect(card, o); } } }, passiveFn:()=>{} },
+    '巨蟹座': { name:'巨蟹座', hp:34, passive:'回合开始恢复2HP', awaken:'潮汐之力', fn:(p,o)=>{ p.heal(8); if(o.armor>0) o.armor = Math.max(0, o.armor-3); }, passiveFn:()=>{} },
+    '狮子座': { name:'狮子座', hp:36, passive:'HP>50%时伤害+2', awaken:'王者审判', fn:(p,o)=>{ o.takeDamage(6,false); p.heal(3); }, passiveFn:(p,o,c)=>{ if(p.hp > p.maxHp*0.5){ let extra=2+(p._heroLevel||0); o.takeDamage(extra,false); addLog('🦁 狮子座被动：+'+extra+'伤'); } } },
+    '处女座': { name:'处女座', hp:30, passive:'每张牌效果+1', awaken:'完美执行', fn:(p,o)=>{ p._passiveDamageBonus = (p._passiveDamageBonus||0) + 3; addLog('📐 处女座觉醒：伤害+3'); }, passiveFn:()=>{} },
+    '天秤座': { name:'天秤座', hp:32, passive:'双方HP均衡时抽2', awaken:'平衡裁决', fn:(p,o)=>{ let avg = Math.round((p.hp + o.hp)/2); p.hp = avg; o.hp = avg; p.draw(); p.draw(); }, passiveFn:(p,o,c)=>{ if(Math.abs(p.hp - o.hp) <= 3){ p.draw(); p.draw(); addLog('⚖️ 天秤座被动：HP均衡，抽2'); } } },
+    '天蝎座': { name:'天蝎座', hp:30, passive:'对受伤目标伤害+3', awaken:'暗影刺杀', fn:(p,o)=>{ o.takeDamage(4,true); let c=o.discardRandom(); if(c){ p.hand.push(c); addLog('🦂 偷取了'+c.name); } }, passiveFn:(p,o,c)=>{ if(o && o.hp < o.maxHp){ let extra=3+(p._heroLevel||0); o.takeDamage(extra,false); addLog('🦂 天蝎座被动：+'+extra+'伤'); } } },
+    '射手座': { name:'射手座', hp:34, passive:'塔罗牌伤害+2', awaken:'流星射手', fn:(p,o)=>{ o.takeDamage(5,false); p.draw(); }, passiveFn:(p,o,c)=>{ if(c && c.name && Object.keys(TAROT_CARDS).includes(c.name)){ let extra=2+(p._heroLevel||0); o.takeDamage(extra,false); addLog('🏹 射手座被动：+'+extra+'伤'); } } },
+    '摩羯座': { name:'摩羯座', hp:36, passive:'护甲>0时伤害+2', awaken:'大地壁垒', fn:(p,o)=>{ p.armor += 5; o.takeDamage(3,false); }, passiveFn:(p,o,c)=>{ if(p.armor > 0){ let extra=2+(p._heroLevel||0); o.takeDamage(extra,false); addLog('🐐 摩羯座被动：+'+extra+'伤'); } } },
+    '水瓶座': { name:'水瓶座', hp:28, passive:'每回合首张牌抽1', awaken:'革新风暴', fn:(p,o)=>{ for(let i=0; i<2 && o.hand.length>0; i++){ o.discardRandom(); } p.draw(); p.draw(); }, passiveFn:(p,o,c)=>{ if(p.cardsPlayedThisTurn===1){ p.draw(); addLog('🏺 水瓶座被动：抽1'); } } },
+    '双鱼座': { name:'双鱼座', hp:30, passive:'治疗量+3', awaken:'幻梦之境', fn:(p,o)=>{ o.silenceNextTurn = true; p.heal(5); p.draw(); }, passiveFn:()=>{} }
 };
 
-// ---------- 鐜浜嬩欢 ----------
+// ---------- 环境事件 ----------
 const ENVIRONMENT_EVENTS = [
-    { id: 'fog', name: '馃尗锔?杩烽浘绗肩僵', desc: '鎵€鏈夋不鐤楁晥鏋滃噺鍗?, apply: (p,o) => { p._eventHealMod = 0.5; o._eventHealMod = 0.5; } },
-    { id: 'sun', name: '鈽€锔?鐑堟棩鐏肩儳', desc: '濉旂綏鐗屼激瀹?2', apply: (p,o) => { p._eventTarotBonus = 2; o._eventTarotBonus = 2; } },
-    { id: 'armor', name: '馃洝锔?閽㈢敳寮哄寲', desc: '鎶ょ敳鏁堟灉缈诲€?, apply: (p,o) => { p._eventArmorMult = 2; o._eventArmorMult = 2; } },
-    { id: 'reflux', name: '鈿?娉曟湳鍙嶅櫖', desc: '姣忔瑙夐啋鑷韩鍙?浼?, apply: (p,o) => { p._eventAwakenPenalty = 3; o._eventAwakenPenalty = 3; } },
-    { id: 'wind', name: '馃挩 杩呮嵎涔嬮', desc: '姣忓洖鍚堝鎶?寮犵墝', apply: (p,o) => { p._eventExtraDraw = 1; o._eventExtraDraw = 1; } },
-    { id: 'shadow', name: '馃寫 鏆楀奖璇呭拻', desc: '瀵规墜姣忓洖鍚堝彈鍒?鐐逛激瀹?, apply: (p,o) => { p._eventShadowCurse = 1; o._eventShadowCurse = 1; } },
-    { id: 'spring', name: '馃尶 鐢熷懡娉夋秾', desc: '姣忓洖鍚堟仮澶?鐐笻P', apply: (p,o) => { p._eventLifeSpring = 2; o._eventLifeSpring = 2; } },
-    { id: 'silence', name: '馃攪 娌夐粯棰嗗煙', desc: '鏃犳硶浣跨敤瑙夐啋鎶€', apply: (p,o) => { p._eventSilence = true; o._eventSilence = true; } },
-    { id: 'reverse', name: '馃攧 鍛借繍閫嗚浆', desc: '姣忓紶浼ゅ鐗屼娇鍚庣画浼ゅ+1', apply: (p,o) => { p._eventReverse = true; o._eventReverse = true; p._damageStack = 0; o._damageStack = 0; } },
-    { id: 'blood', name: '馃└ 鍡滆鐙傛毚', desc: '鎵€鏈変激瀹?2锛屼絾姣忓洖鍚堣嚜韬彈1浼?, apply: (p,o) => { p._eventDamageBonus = 2; o._eventDamageBonus = 2; p._eventSelfDamage = 1; o._eventSelfDamage = 1; } }
+    { id: 'fog', name: '🌫️ 迷雾笼罩', desc: '所有治疗效果减半', apply: (p,o) => { p._eventHealMod = 0.5; o._eventHealMod = 0.5; } },
+    { id: 'sun', name: '☀️ 烈日灼烧', desc: '塔罗牌伤害+2', apply: (p,o) => { p._eventTarotBonus = 2; o._eventTarotBonus = 2; } },
+    { id: 'armor', name: '🛡️ 钢甲强化', desc: '护甲效果翻倍', apply: (p,o) => { p._eventArmorMult = 2; o._eventArmorMult = 2; } },
+    { id: 'reflux', name: '⚡ 法术反噬', desc: '每次觉醒自身受3伤', apply: (p,o) => { p._eventAwakenPenalty = 3; o._eventAwakenPenalty = 3; } },
+    { id: 'wind', name: '💨 迅捷之风', desc: '每回合多抽1张牌', apply: (p,o) => { p._eventExtraDraw = 1; o._eventExtraDraw = 1; } },
+    { id: 'shadow', name: '🌑 暗影诅咒', desc: '对手每回合受到1点伤害', apply: (p,o) => { p._eventShadowCurse = 1; o._eventShadowCurse = 1; } },
+    { id: 'spring', name: '🌿 生命泉涌', desc: '每回合恢复2点HP', apply: (p,o) => { p._eventLifeSpring = 2; o._eventLifeSpring = 2; } },
+    { id: 'silence', name: '🔇 沉默领域', desc: '无法使用觉醒技', apply: (p,o) => { p._eventSilence = true; o._eventSilence = true; } },
+    { id: 'reverse', name: '🔄 命运逆转', desc: '每张伤害牌使后续伤害+1', apply: (p,o) => { p._eventReverse = true; o._eventReverse = true; p._damageStack = 0; o._damageStack = 0; } },
+    { id: 'blood', name: '🩸 嗜血狂暴', desc: '所有伤害+2，但每回合自身受1伤', apply: (p,o) => { p._eventDamageBonus = 2; o._eventDamageBonus = 2; p._eventSelfDamage = 1; o._eventSelfDamage = 1; } }
 ];
 function getRandomEvent() { return ENVIRONMENT_EVENTS[Math.floor(Math.random() * ENVIRONMENT_EVENTS.length)]; }
 
-// ---------- 鏁版嵁绠＄悊 ----------
+// ---------- 数据管理 ----------
 const DEFAULT_STATS = {
     totalGames: 0, wins: 0, losses: 0, draws: 0,
     coins: 100, winStreak: 0, maxWinStreak: 0,
@@ -1184,7 +1184,7 @@ function loadStats() {
             if (!data.towerStats) data.towerStats = { bestLayer: 0, totalRuns: 0, totalGoldEarned: 0 };
             return data;
         }
-    } catch (e) { console.warn('璇诲彇鏁版嵁澶辫触', e); }
+    } catch (e) { console.warn('读取数据失败', e); }
     const def = JSON.parse(JSON.stringify(DEFAULT_STATS));
     const heroKeys = Object.keys(HEROES);
     for (let key of heroKeys) {
@@ -1197,7 +1197,7 @@ function loadStats() {
 }
 function saveStats(stats) { localStorage.setItem('gameStats', JSON.stringify(stats)); }
 
-// ---------- 鍏ㄥ眬鍙橀噺 ----------
+// ---------- 全局变量 ----------
 let player, pvpOpponent = null, gameOver = false, isPlayerTurn = true, turnCount = 0;
 let processing = false;
 let currentTask = null;
@@ -1208,7 +1208,7 @@ let isPvPMode = false;
 let pvpGameActive = false;
 let ws = null;
 
-// ---------- Player 绫?----------
+// ---------- Player 类 ----------
 class Player {
     constructor(heroKey, isHuman) {
         const t = HEROES[heroKey];
@@ -1266,7 +1266,7 @@ class Player {
         }
         let d = [];
         for (let f of ['Ni','Ne','Si','Se','Ti','Te','Fi','Fe']) { d.push({...CARD_TEMPLATES[f]}); d.push({...CARD_TEMPLATES[f]}); }
-        for (let s of ['璇祴','蹇冩祦','闈㈠叿','鏉犵簿']) d.push({...CARD_TEMPLATES[s]});
+        for (let s of ['误测','心流','面具','杠精']) d.push({...CARD_TEMPLATES[s]});
         for (let t of Object.keys(TAROT_CARDS)) d.push({...CARD_TEMPLATES[t]});
         for (let z of Object.keys(ZODIAC_CARDS)) d.push({...CARD_TEMPLATES[z]});
         return shuffle(d);
@@ -1293,31 +1293,31 @@ class Player {
     }
     takeDamage(dmg, isTrue) {
         if (!this.alive) return;
-        if (this.heroKey === 'INFJ' && !this._isfjUsed) { this.armor += 2; this._isfjUsed = true; addLog('馃洝锔?INFJ琚姩锛氬彈鍑?2鎶ょ敳'); }
-        if (this.heroKey === 'ESFJ') { this.armor += 1 * (this._eventArmorMult || 1); addLog('馃洝锔?ESFJ鎶ょ敳+1'); }
-        if (this.heroKey === 'ISFJ' && !this._isfjUsed) { this.armor += 2 * (this._eventArmorMult || 1); this._isfjUsed = true; addLog('馃洝锔?ISFJ鍙楀嚮+2鎶ょ敳'); }
-        if (this.heroKey === '閲戠墰搴? && !this._isfjUsed) { dmg = Math.max(0, dmg - 2); this._isfjUsed = true; addLog('馃悅 閲戠墰搴ц鍔細鍙楀嚮-2浼?); }
-        if (this.maskActive && !isTrue) { this.maskActive = false; addLog('馃幁 闈㈠叿鎶垫秷浼ゅ锛岃幏寰?鎶ょ敳'); this.armor += 5; return; }
-        if (!isTrue && this.armor > 0) { const absorb = Math.min(this.armor, dmg); this.armor -= absorb; dmg -= absorb; addLog('馃洝锔?鎶ょ敳鍚告敹'+absorb+'鐐?); }
+        if (this.heroKey === 'INFJ' && !this._isfjUsed) { this.armor += 2; this._isfjUsed = true; addLog('🛡️ INFJ被动：受击+2护甲'); }
+        if (this.heroKey === 'ESFJ') { this.armor += 1 * (this._eventArmorMult || 1); addLog('🛡️ ESFJ护甲+1'); }
+        if (this.heroKey === 'ISFJ' && !this._isfjUsed) { this.armor += 2 * (this._eventArmorMult || 1); this._isfjUsed = true; addLog('🛡️ ISFJ受击+2护甲'); }
+        if (this.heroKey === '金牛座' && !this._isfjUsed) { dmg = Math.max(0, dmg - 2); this._isfjUsed = true; addLog('🐂 金牛座被动：受击-2伤'); }
+        if (this.maskActive && !isTrue) { this.maskActive = false; addLog('🎭 面具抵消伤害，获得5护甲'); this.armor += 5; return; }
+        if (!isTrue && this.armor > 0) { const absorb = Math.min(this.armor, dmg); this.armor -= absorb; dmg -= absorb; addLog('🛡️ 护甲吸收'+absorb+'点'); }
         this.hp = Math.max(0, this.hp - dmg);
         if (this.hp === 0) this.alive = false;
-        addLog('馃挜 鍙楀埌'+dmg+'浼ゅ锛孒P '+this.hp+'锛屾姢鐢?'+this.armor);
+        addLog('💥 受到'+dmg+'伤害，HP '+this.hp+'，护甲 '+this.armor);
         updateUI();
     }
     heal(amount) {
-        if (this._eventHealMod !== undefined) { amount = Math.round(amount * this._eventHealMod); if (this._eventHealMod < 1) addLog('馃尗锔?杩烽浘绗肩僵锛氭不鐤楁晥鏋滃噺鍗?); }
-        if (this.heroKey === 'ENFP') { amount += 2; addLog('馃挌 ENFP娌荤枟+2'); }
-        if (this.heroKey === '鍙岄奔搴?) { amount += 3; addLog('馃悷 鍙岄奔搴ф不鐤?3'); }
+        if (this._eventHealMod !== undefined) { amount = Math.round(amount * this._eventHealMod); if (this._eventHealMod < 1) addLog('🌫️ 迷雾笼罩：治疗效果减半'); }
+        if (this.heroKey === 'ENFP') { amount += 2; addLog('💚 ENFP治疗+2'); }
+        if (this.heroKey === '双鱼座') { amount += 3; addLog('🐟 双鱼座治疗+3'); }
         const actualHeal = Math.min(amount, this.maxHp - this.hp);
         this.hp = Math.min(this.maxHp, this.hp + amount);
         this.totalHealed += actualHeal;
-        addLog('馃挌 鎭㈠'+amount+'锛孒P '+this.hp);
+        addLog('💚 恢复'+amount+'，HP '+this.hp);
         updateUI();
     }
     applyPassiveStartTurn() {
-        if (this.heroKey === 'INFP' && this.hp < this.maxHp * 0.5) { this.heal(2); addLog('馃尶 INFP琚姩锛氫綆琛€閲忔仮澶?'); }
-        if (this.heroKey === 'ESFP' && this.hand.length > 3) { this.draw(); addLog('馃幁 ESFP琚姩锛氭墜鐗?3鎶?'); }
-        if (this.heroKey === '宸ㄨ煿搴?) { this.heal(2); addLog('馃 宸ㄨ煿搴ц鍔細鍥炲悎寮€濮嬫仮澶?HP'); }
+        if (this.heroKey === 'INFP' && this.hp < this.maxHp * 0.5) { this.heal(2); addLog('🌿 INFP被动：低血量恢复2'); }
+        if (this.heroKey === 'ESFP' && this.hand.length > 3) { this.draw(); addLog('🎭 ESFP被动：手牌>3抽1'); }
+        if (this.heroKey === '巨蟹座') { this.heal(2); addLog('🦀 巨蟹座被动：回合开始恢复2HP'); }
     }
     startTurn() {
         this.cardsPlayedThisTurn = 0;
@@ -1330,11 +1330,11 @@ class Player {
         this.draw();
         this.draw();
         this.drawExtra();
-        if (this.silenceNextTurn) { addLog('馃攪 琚矇榛橈紝鏃犳硶瑙夐啋'); this.silenceNextTurn = false; }
-        if (this._eventShadowCurse) { this.takeDamage(this._eventShadowCurse, false); addLog('馃寫 鏆楀奖璇呭拻锛氬彈鍒?+this._eventShadowCurse+'鐐逛激瀹?); }
-        if (this._eventLifeSpring) { this.heal(this._eventLifeSpring); addLog('馃尶 鐢熷懡娉夋秾锛氭仮澶?+this._eventLifeSpring+'鐐笻P'); }
-        if (this._eventSelfDamage) { this.takeDamage(this._eventSelfDamage, false); addLog('馃└ 鍡滆鐙傛毚锛氳嚜韬彈鍒?+this._eventSelfDamage+'鐐逛激瀹?); }
-        if (this.isBoss && this.bossSkills) { /* Boss 鎶€鑳界暐 */ }
+        if (this.silenceNextTurn) { addLog('🔇 被沉默，无法觉醒'); this.silenceNextTurn = false; }
+        if (this._eventShadowCurse) { this.takeDamage(this._eventShadowCurse, false); addLog('🌑 暗影诅咒：受到'+this._eventShadowCurse+'点伤害'); }
+        if (this._eventLifeSpring) { this.heal(this._eventLifeSpring); addLog('🌿 生命泉涌：恢复'+this._eventLifeSpring+'点HP'); }
+        if (this._eventSelfDamage) { this.takeDamage(this._eventSelfDamage, false); addLog('🩸 嗜血狂暴：自身受到'+this._eventSelfDamage+'点伤害'); }
+        if (this.isBoss && this.bossSkills) { /* Boss 技能略 */ }
         this.applyPassiveStartTurn();
         updateUI();
     }
@@ -1345,8 +1345,8 @@ class Player {
     }
     playCard(index, opponent) {
         let maxPlays = 1;
-        if (this.heroKey === '鍙屽瓙搴? && this.cardsPlayedThisTurn < 2) maxPlays = 2;
-        if (this.cardsPlayedThisTurn >= maxPlays) { addLog('鏈洖鍚堝凡鍑虹墝'); return false; }
+        if (this.heroKey === '双子座' && this.cardsPlayedThisTurn < 2) maxPlays = 2;
+        if (this.cardsPlayedThisTurn >= maxPlays) { addLog('本回合已出牌'); return false; }
         if (index < 0 || index >= this.hand.length) return false;
         const card = this.hand.splice(index, 1)[0];
         this.discard.push(card);
@@ -1357,7 +1357,7 @@ class Player {
             this.elementHistory.push(card.element);
             if (this.elementHistory.length > 3) this.elementHistory.shift();
         }
-        addLog('鈻讹笍 鎵撳嚭 '+card.name+' (鍓╀綑 '+this.hand.length+' 寮?');
+        addLog('▶️ 打出 '+card.name+' (剩余 '+this.hand.length+' 张)');
         this.resolveEffect(card, opponent);
         this.applyPassiveAfterPlay(card, opponent);
         this.draw();
@@ -1372,14 +1372,14 @@ class Player {
             if (this._eventReverse) {
                 d += this._damageStack;
                 this._damageStack += 1;
-                addLog('馃攧 鍛借繍閫嗚浆锛氫激瀹?'+this._damageStack);
+                addLog('🔄 命运逆转：伤害+'+this._damageStack);
             }
-            if (card.name && Object.keys(TAROT_CARDS).includes(card.name) && this._eventTarotBonus) { d += this._eventTarotBonus; addLog('鈽€锔?鐑堟棩鐏肩儳锛氬缃楃墝浼ゅ+'+this._eventTarotBonus); }
-            if (this._eventDamageBonus) { d += this._eventDamageBonus; addLog('馃└ 鍡滆鐙傛毚锛氫激瀹?'+this._eventDamageBonus); }
-            if (this._passiveDamageBonus > 0) { d += this._passiveDamageBonus; this._passiveDamageBonus = 0; addLog('鈿?鍔涢噺鍔犳垚+'+d); }
+            if (card.name && Object.keys(TAROT_CARDS).includes(card.name) && this._eventTarotBonus) { d += this._eventTarotBonus; addLog('☀️ 烈日灼烧：塔罗牌伤害+'+this._eventTarotBonus); }
+            if (this._eventDamageBonus) { d += this._eventDamageBonus; addLog('🩸 嗜血狂暴：伤害+'+this._eventDamageBonus); }
+            if (this._passiveDamageBonus > 0) { d += this._passiveDamageBonus; this._passiveDamageBonus = 0; addLog('⚡ 力量加成+'+d); }
             if (card.element && isWeakness(card.element, target.heroKey)) {
                 d += 2;
-                addLog('鈿?鍏冪礌鍏嬪埗锛?+getElemIcon(card.element)+'鍏嬪埗鐩爣锛屼激瀹?2');
+                addLog('⚡ 元素克制：'+getElemIcon(card.element)+'克制目标，伤害+2');
             }
             target.takeDamage(d, false);
             this.totalDamageDealt += d;
@@ -1390,24 +1390,24 @@ class Player {
         const healSelf = (amt) => { this.heal(amt); };
         const gainArmor = (amt) => {
             amt = Math.round(amt * (this._eventArmorMult || 1));
-            if (this._eventArmorMult > 1) addLog('馃洝锔?閽㈢敳寮哄寲锛氭姢鐢茬炕鍊?);
+            if (this._eventArmorMult > 1) addLog('🛡️ 钢甲强化：护甲翻倍');
             this.armor += amt;
-            addLog('馃洝锔?鎶ょ敳+'+amt+'锛屽綋鍓?+this.armor);
+            addLog('🛡️ 护甲+'+amt+'，当前'+this.armor);
         };
-        const discardOpponent = (target) => { let c = target.discardRandom(); if (c) addLog('馃棏锔?寮冩帀瀵规墜'+c.name); };
-        // 鍩虹鍗＄墝鏁堟灉
+        const discardOpponent = (target) => { let c = target.discardRandom(); if (c) addLog('🗑️ 弃掉对手'+c.name); };
+        // 基础卡牌效果
         if (name === 'Ni') { discardOpponent(opponent); dealDamage(3, ['N','I'], opponent); }
-        else if (name === 'Ne') { let found = null; for (let i = 0; i < this.deck.length; i++) { if (this.deck[i].name && ['璇祴','蹇冩祦','闈㈠叿','鏉犵簿'].includes(this.deck[i].name)) { found = this.deck.splice(i,1)[0]; break; } } if (found) { this.hand.push(found); addLog('馃攳 妫€绱㈠埌 '+found.name); } else addLog('鐗屽簱鏃犳儏鏅墝'); this.draw(); }
+        else if (name === 'Ne') { let found = null; for (let i = 0; i < this.deck.length; i++) { if (this.deck[i].name && ['误测','心流','面具','杠精'].includes(this.deck[i].name)) { found = this.deck.splice(i,1)[0]; break; } } if (found) { this.hand.push(found); addLog('🔍 检索到 '+found.name); } else addLog('牌库无情景牌'); this.draw(); }
         else if (name === 'Si') { healSelf(2); }
         else if (name === 'Se') { dealDamage(2, ['S','E'], opponent); }
-        else if (name === 'Ti') { opponent.silenceNextTurn = true; addLog('馃攪 瀵规墜涓嬪洖鍚堣娌夐粯'); }
-        else if (name === 'Te') { let base = 3; if (opponent.hp > 20) { base += 2; addLog('鈿?HP>20锛岄澶?2'); } dealDamage(base, ['T','E'], opponent); }
+        else if (name === 'Ti') { opponent.silenceNextTurn = true; addLog('🔇 对手下回合被沉默'); }
+        else if (name === 'Te') { let base = 3; if (opponent.hp > 20) { base += 2; addLog('⚡ HP>20，额外+2'); } dealDamage(base, ['T','E'], opponent); }
         else if (name === 'Fi') { const lost = this.maxHp - this.hp; gainArmor(Math.round(lost / 2)); }
-        else if (name === 'Fe') { let amt = 3; if (this.hp < 20) { amt += 2; addLog('馃挌 HP<20锛岄澶?2'); } healSelf(amt); }
-        else if (name === '璇祴') { const cnt = this.hand.length; if (cnt === 0) { addLog('娌℃湁鎵嬬墝鍙純'); return; } this.discard.push(...this.hand); this.hand = []; opponent.takeDamage(cnt * 2, false); }
-        else if (name === '蹇冩祦') { this.draw(); addLog('馃寑 蹇冩祦锛氭娊1'); }
-        else if (name === '闈㈠叿') { this.maskActive = true; addLog('馃幁 鑾峰緱闈㈠叿鎶ょ浘'); }
-        else if (name === '鏉犵簿') { opponent.nextCardDmgReduce = 3; addLog('馃搲 瀵规墜涓嬪紶-3浼?); }
+        else if (name === 'Fe') { let amt = 3; if (this.hp < 20) { amt += 2; addLog('💚 HP<20，额外+2'); } healSelf(amt); }
+        else if (name === '误测') { const cnt = this.hand.length; if (cnt === 0) { addLog('没有手牌可弃'); return; } this.discard.push(...this.hand); this.hand = []; opponent.takeDamage(cnt * 2, false); }
+        else if (name === '心流') { this.draw(); addLog('🌀 心流：抽1'); }
+        else if (name === '面具') { this.maskActive = true; addLog('🎭 获得面具护盾'); }
+        else if (name === '杠精') { opponent.nextCardDmgReduce = 3; addLog('📉 对手下张-3伤'); }
         updateUI();
     }
     applyPassiveAfterPlay(card, opponent) {
@@ -1416,17 +1416,17 @@ class Player {
         if (hero && hero.passiveFn) { hero.passiveFn(this, opponent, card); this._passiveUsedThisTurn = true; }
     }
     useAwaken(opponent) {
-        if (this.awakenProgress < 5) { addLog('瑙夐啋杩涘害涓嶈冻 ('+this.awakenProgress+'/5)'); return false; }
-        if (this.silenceNextTurn) { addLog('琚矇榛橈紝鏃犳硶瑙夐啋'); return false; }
-        if (this._eventSilence) { addLog('馃攪 娌夐粯棰嗗煙锛氭棤娉曡閱?); return false; }
+        if (this.awakenProgress < 5) { addLog('觉醒进度不足 ('+this.awakenProgress+'/5)'); return false; }
+        if (this.silenceNextTurn) { addLog('被沉默，无法觉醒'); return false; }
+        if (this._eventSilence) { addLog('🔇 沉默领域：无法觉醒'); return false; }
         const hero = HEROES[this.heroKey];
         if (!hero.fn) return false;
         this.awakenProgress = 0;
         this.awakenUsed++;
-        if (this._eventAwakenPenalty) { this.takeDamage(this._eventAwakenPenalty, false); addLog('鈿?娉曟湳鍙嶅櫖锛氳嚜韬彈鍒?+this._eventAwakenPenalty+'鐐逛激瀹?); }
-        addLog('馃専 瑙夐啋锛?+hero.awaken+' (杩涘害宸查噸缃?');
+        if (this._eventAwakenPenalty) { this.takeDamage(this._eventAwakenPenalty, false); addLog('⚡ 法术反噬：自身受到'+this._eventAwakenPenalty+'点伤害'); }
+        addLog('🌟 觉醒：'+hero.awaken+' (进度已重置)');
         hero.fn(this, opponent);
-        if (this.heroKey === 'ENFJ') { this.draw(); this.draw(); addLog('馃摎 ENFJ琚姩锛氳閱掑悗鎶?'); }
+        if (this.heroKey === 'ENFJ') { this.draw(); this.draw(); addLog('📚 ENFJ被动：觉醒后抽2'); }
         const stats = loadStats();
         stats.dailyAwaken = (stats.dailyAwaken || 0) + 1;
         saveStats(stats);
@@ -1435,7 +1435,7 @@ class Player {
     }
 }
 
-// ---------- 杈呭姪鍑芥暟 ----------
+// ---------- 辅助函数 ----------
 function safeSetText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
 function safeSetStyle(id, prop, val) { const el = document.getElementById(id); if (el) el.style[prop] = val; }
 
@@ -1466,34 +1466,31 @@ function showGameOver(result, sub, resultType) {
     overlay.classList.add('show');
 }
 
-// ---------- PvP 妯″潡锛堜慨澶嶇増锛氭湰鍦版墽琛屾晥鏋?+ 鐘舵€佸悓姝ワ級 ----------
-let myName = "鐜╁" + Math.floor(Math.random() * 900 + 100);
+// ---------- PvP 模块（修复版：本地执行效果 + 状态同步） ----------
+let myName = "玩家" + Math.floor(Math.random() * 900 + 100);
 let myHeroPvp = "INTJ";
 let pvpRoomId = null;
 let pvpInRoom = false;
 let pvpIsHost = false;
 let pvpReady = false;
 
-// ===== 服务器地址配置（部署时修改此项）=====
-const PVP_SERVER_URL = "ws://192.168.1.129:8081";  // LAN版本，部署后改为 wss://你的域名
-
 function connectPvP() {
-    myName = prompt("杈撳叆浣犵殑鍚嶅瓧:", myName) || myName;
+    myName = prompt("输入你的名字:", myName) || myName;
     const heroKeys = Object.keys(HEROES);
     const heroList = heroKeys.map((k,i) => (i+1)+". "+k).join("\n");
-    const choice = prompt("閫夋嫨浣犵殑鑻遍泟:\n" + heroList, "1");
+    const choice = prompt("选择你的英雄:\n" + heroList, "1");
     const idx = parseInt(choice) - 1;
     myHeroPvp = (idx >= 0 && idx < heroKeys.length) ? heroKeys[idx] : "INTJ";
 
     if (ws) ws.close();
-    ws = new WebSocket(PVP_SERVER_URL);
+    ws = new WebSocket("ws://localhost:8080");
     ws.onopen = () => {
         ws.send(JSON.stringify({ type: "join", name: myName, hero: myHeroPvp }));
-        addLog("鉁?宸茶繛鎺?PvP 鏈嶅姟鍣?);
+        addLog("✅ 已连接 PvP 服务器");
         showPvPLobby();
     };
     ws.onclose = () => {
-        if (isPvPMode) addLog("鉂?PvP 杩炴帴鏂紑");
+        if (isPvPMode) addLog("❌ PvP 连接断开");
         isPvPMode = false;
         pvpGameActive = false;
     };
@@ -1506,30 +1503,30 @@ function showPvPLobby() {
     overlay.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:200;display:flex;justify-content:center;align-items:center;";
     overlay.innerHTML = `
         <div style="background:#232837;border-radius:24px;padding:24px;min-width:400px;max-width:500px;color:#e8edf5;">
-            <h2 style="color:#ffd54f;margin-bottom:12px;">馃懃 PvP 澶у巺</h2>
-            <p style="font-size:13px;color:#9aa9c9;margin-bottom:12px;">宸茶繛鎺ワ細<b>${myName}</b> (${myHeroPvp})</p>
+            <h2 style="color:#ffd54f;margin-bottom:12px;">👥 PvP 大厅</h2>
+            <p style="font-size:13px;color:#9aa9c9;margin-bottom:12px;">已连接：<b>${myName}</b> (${myHeroPvp})</p>
             <div style="margin-bottom:10px;">
-                <div style="font-size:13px;color:#b0c4ff;margin-bottom:6px;">鍦ㄧ嚎鐜╁</div>
+                <div style="font-size:13px;color:#b0c4ff;margin-bottom:6px;">在线玩家</div>
                 <div id="pvpPlayerList" style="background:#1a1e2c;border-radius:12px;padding:8px;max-height:100px;overflow-y:auto;font-size:13px;"></div>
             </div>
             <div style="margin-bottom:10px;">
-                <div style="font-size:13px;color:#b0c4ff;margin-bottom:6px;">鎴块棿鍒楄〃</div>
+                <div style="font-size:13px;color:#b0c4ff;margin-bottom:6px;">房间列表</div>
                 <div id="pvpRoomList" style="background:#1a1e2c;border-radius:12px;padding:8px;max-height:120px;overflow-y:auto;font-size:13px;"></div>
-                <button id="pvpCreateRoom" style="width:100%;padding:8px;margin-top:6px;border:none;border-radius:30px;background:#5c6bc0;color:#fff;font-weight:600;cursor:pointer;">+ 鍒涘缓鎴块棿</button>
+                <button id="pvpCreateRoom" style="width:100%;padding:8px;margin-top:6px;border:none;border-radius:30px;background:#5c6bc0;color:#fff;font-weight:600;cursor:pointer;">+ 创建房间</button>
             </div>
             <div id="pvpRoomPanel" style="display:none;border-top:1px solid #3e465c;padding-top:10px;">
-                <div style="font-size:13px;color:#b0c4ff;margin-bottom:6px;">馃彔 褰撳墠鎴块棿</div>
+                <div style="font-size:13px;color:#b0c4ff;margin-bottom:6px;">🏠 当前房间</div>
                 <div id="pvpRoomPlayers" style="display:flex;gap:10px;margin-bottom:8px;"></div>
                 <div id="pvpHostActions" style="display:none;text-align:center;margin-bottom:8px;">
-                    <button id="pvpStartGameBtn" style="padding:8px 24px;border:none;border-radius:30px;background:#2e7d32;color:#fff;font-weight:700;font-size:15px;cursor:pointer;border-bottom:4px solid #1b5e20;" disabled>馃殌 寮€濮嬪鎴?/button>
+                    <button id="pvpStartGameBtn" style="padding:8px 24px;border:none;border-radius:30px;background:#2e7d32;color:#fff;font-weight:700;font-size:15px;cursor:pointer;border-bottom:4px solid #1b5e20;" disabled>🚀 开始对战</button>
                 </div>
                 <div style="display:flex;gap:6px;justify-content:center;">
-                    <button id="pvpReadyBtn" style="padding:6px 16px;border:none;border-radius:30px;background:#f9a825;color:#1a1e2c;font-weight:600;cursor:pointer;">鉁?鍑嗗</button>
-                    <button id="pvpLeaveBtn" style="padding:6px 16px;border:none;border-radius:30px;background:#c62828;color:#fff;font-weight:600;cursor:pointer;">馃毆 绂诲紑鎴块棿</button>
+                    <button id="pvpReadyBtn" style="padding:6px 16px;border:none;border-radius:30px;background:#f9a825;color:#1a1e2c;font-weight:600;cursor:pointer;">✅ 准备</button>
+                    <button id="pvpLeaveBtn" style="padding:6px 16px;border:none;border-radius:30px;background:#c62828;color:#fff;font-weight:600;cursor:pointer;">🚪 离开房间</button>
                 </div>
             </div>
             <div style="margin-top:12px;display:flex;gap:6px;">
-                <button id="pvpCloseBtn" style="flex:1;padding:8px;border:none;border-radius:30px;background:#3b455f;color:#fff;cursor:pointer;">杩斿洖</button>
+                <button id="pvpCloseBtn" style="flex:1;padding:8px;border:none;border-radius:30px;background:#3b455f;color:#fff;cursor:pointer;">返回</button>
             </div>
         </div>
     `;
@@ -1555,11 +1552,11 @@ function handlePvPMessage(e) {
         case "room_list":
             const rlist = document.getElementById("pvpRoomList");
             if (rlist) {
-                if (!msg.rooms.length) rlist.innerHTML = "<div style=\"color:#555;\">鏆傛棤鎴块棿</div>";
+                if (!msg.rooms.length) rlist.innerHTML = "<div style=\"color:#555;\">暂无房间</div>";
                 else rlist.innerHTML = msg.rooms.map(r =>
                     `<div style="display:flex;justify-content:space-between;padding:4px 0;">
                         <span>${r.hostName} (${r.playerCount}/2)</span>
-                        <button onclick="joinPvPRoom('${r.roomId}')" style="padding:2px 10px;border:none;border-radius:20px;background:#5c6bc0;color:#fff;cursor:pointer;font-size:12px;" ${r.playerCount>=2?'disabled':''}>鍔犲叆</button>
+                        <button onclick="joinPvPRoom('${r.roomId}')" style="padding:2px 10px;border:none;border-radius:20px;background:#5c6bc0;color:#fff;cursor:pointer;font-size:12px;" ${r.playerCount>=2?'disabled':''}>加入</button>
                     </div>`
                 ).join("");
             }
@@ -1584,7 +1581,7 @@ function handlePvPMessage(e) {
             document.getElementById("pvpCreateRoom").disabled = false;
             break;
         case "game_start": {
-            // 寮€濮?PvP 瀵规垬
+            // 开始 PvP 对战
             const overlay = document.getElementById("pvpLobby");
             if (overlay) overlay.remove();
             document.getElementById("hero-select").style.display = "none";
@@ -1610,32 +1607,32 @@ function handlePvPMessage(e) {
 
             if (isPlayerTurn) {
                 player.startTurn();
-                addLog("馃 浣犵殑鍥炲悎 (绗?1 鍥炲悎)");
+                addLog("🧑 你的回合 (第 1 回合)");
             } else {
-                addLog("鈴?绛夊緟瀵规墜...");
+                addLog("⏳ 等待对手...");
             }
             updateUI();
-            addLog("鈿旓笍 PvP 瀵规垬寮€濮嬶紒");
-            addLog("馃 浣狅細" + myName + " (" + player.heroKey + ")");
-            addLog("馃懁 瀵规墜锛? + pvpOpponent.name + " (" + pvpOpponent.heroKey + ")");
+            addLog("⚔️ PvP 对战开始！");
+            addLog("🧑 你：" + myName + " (" + player.heroKey + ")");
+            addLog("👤 对手：" + pvpOpponent.name + " (" + pvpOpponent.heroKey + ")");
             break;
         }
         case "game_action": {
             const action = msg.action;
             const from = msg.from;
-            if (from === myName) break;  // 蹇界暐鑷繁鍙戦€佺殑娑堟伅
+            if (from === myName) break;  // 忽略自己发送的消息
 
             if (action === "play_card") {
-                // 瀵规墜鍑虹墝 鈥?鐩存帴搴旂敤鐘舵€侊紙涓嶅啀鎵ц鏁堟灉锛岄伩鍏嶅弻閲嶆墽琛岋級
+                // 对手出牌 — 直接应用状态（不再执行效果，避免双重执行）
                 if (msg.data) {
-                    // 鎺ユ敹绔殑 player 瀵瑰簲鍙戦€佺鐨?opponent
-                    // 鎺ユ敹绔殑 pvpOpponent 瀵瑰簲鍙戦€佺鐨?player
+                    // 接收端的 player 对应发送端的 opponent
+                    // 接收端的 pvpOpponent 对应发送端的 player
                     const d = msg.data;
                     player.hp = d.opponentHp;
                     player.armor = d.opponentArmor;
                     player.alive = d.opponentAlive;
                     player.awakenProgress = d.opponentAwaken;
-                    // 鍚屾鎵嬬墝鏁伴噺鍙樺寲锛堝純鐗屾晥鏋滐級
+                    // 同步手牌数量变化（弃牌效果）
                     if (d.opponentHandCount !== undefined) {
                         while (player.hand.length > d.opponentHandCount) {
                             const c = player.hand.pop();
@@ -1652,34 +1649,34 @@ function handlePvPMessage(e) {
                             if (c) pvpOpponent.discard.push(c);
                         }
                     }
-                    // 鍚屾寮冪墝鍫嗕俊鎭紙鐢ㄤ簬鎶界墝鏃剁墝搴撻噸寤猴級
+                    // 同步弃牌堆信息（用于抽牌时牌库重建）
                     if (d.playerDiscardCount !== undefined) {
-                        // 寮冪墝鍫嗗彧鍚屾鏁伴噺锛屼笉鍚屾鍐呭
+                        // 弃牌堆只同步数量，不同步内容
                     }
                     if (d.opponentDiscardCount !== undefined) {
-                        // 寮冪墝鍫嗗彧鍚屾鏁伴噺锛屼笉鍚屾鍐呭
+                        // 弃牌堆只同步数量，不同步内容
                     }
-                    addLog("馃摠 鏀跺埌瀵规墜鍑虹墝鍚屾锛岀姸鎬佸凡鏇存柊");
+                    addLog("📨 收到对手出牌同步，状态已更新");
                 }
-                // 妫€鏌ユ父鎴忕粨鏉?
+                // 检查游戏结束
                 if (!player.alive) {
                     gameOver = true;
-                    showGameOver("馃拃 璐ュ寳", "浣犵殑 HP 褰掗浂", "loss");
+                    showGameOver("💀 败北", "你的 HP 归零", "loss");
                     break;
                 }
                 if (!pvpOpponent.alive) {
                     gameOver = true;
-                    showGameOver("馃弳 鑳滃埄", "瀵规墜 HP 褰掗浂", "win");
+                    showGameOver("🏆 胜利", "对手 HP 归零", "win");
                     break;
                 }
-                // 鍒囨崲鍥炲悎
+                // 切换回合
                 isPlayerTurn = true;
                 turnCount++;
                 player.startTurn();
-                addLog("馃 浣犵殑鍥炲悎 (绗?" + turnCount + " 鍥炲悎)");
+                addLog("🧑 你的回合 (第 " + turnCount + " 回合)");
                 updateUI();
             } else if (action === "awaken") {
-                // 瀵规墜瑙夐啋 鈥?鐩存帴搴旂敤鐘舵€?
+                // 对手觉醒 — 直接应用状态
                 if (msg.data) {
                     const d = msg.data;
                     player.hp = d.opponentHp;
@@ -1690,29 +1687,29 @@ function handlePvPMessage(e) {
                     pvpOpponent.armor = d.playerArmor;
                     pvpOpponent.alive = d.playerAlive;
                     pvpOpponent.awakenProgress = d.playerAwaken;
-                    addLog("馃摠 瀵规墜浣跨敤浜嗚閱掓妧锛岀姸鎬佸凡鏇存柊");
+                    addLog("📨 对手使用了觉醒技，状态已更新");
                 }
                 if (!player.alive) {
                     gameOver = true;
-                    showGameOver("馃拃 璐ュ寳", "瀵规墜浣跨敤浜嗚閱掓妧", "loss");
+                    showGameOver("💀 败北", "对手使用了觉醒技", "loss");
                     break;
                 }
                 if (!pvpOpponent.alive) {
                     gameOver = true;
-                    showGameOver("馃弳 鑳滃埄", "瀵规墜瑙夐啋鍚庤嚜姣?, "win");
+                    showGameOver("🏆 胜利", "对手觉醒后自毁", "win");
                     break;
                 }
                 isPlayerTurn = true;
                 turnCount++;
                 player.startTurn();
-                addLog("馃 浣犵殑鍥炲悎 (绗?" + turnCount + " 鍥炲悎)");
+                addLog("🧑 你的回合 (第 " + turnCount + " 回合)");
                 updateUI();
             } else if (action === "concede") {
-                addLog("馃彸锔?瀵规墜鎶曢檷浜嗭紒");
-                showGameOver("馃弳 鑳滃埄", "瀵规墜涓诲姩鎶曢檷", "win");
+                addLog("🏳️ 对手投降了！");
+                showGameOver("🏆 胜利", "对手主动投降", "win");
                 pvpGameActive = false;
             } else if (action === "game_over") {
-                showGameOver("馃拃 璐ュ寳", msg.reason || "瀵规墜鑾疯儨", "loss");
+                showGameOver("💀 败北", msg.reason || "对手获胜", "loss");
                 pvpGameActive = false;
             }
             break;
@@ -1736,11 +1733,11 @@ function updatePvPRoomUI(players) {
         d.style.cssText = "flex:1;background:#2a3042;border-radius:12px;padding:12px;text-align:center;border:2px solid " + (p ? (p.isHost ? "#ffd54f" : "#3e465c") : "#3e465c") + ";";
         var pHtml = "";
         if (p) {
-            pHtml += "<div style='font-weight:700;'>" + p.name + (p.isHost ? " 馃憫" : "") + "</div>";
+            pHtml += "<div style='font-weight:700;'>" + p.name + (p.isHost ? " 👑" : "") + "</div>";
             pHtml += "<div style='font-size:12px;color:#b388ff;'>" + p.hero + "</div>";
-            pHtml += "<div style='font-size:11px;color:" + (p.ready ? "#4caf50" : "#ef5350") + ";'>" + (p.ready ? "鉁?宸插噯澶? : "鈴?鏈噯澶?) + "</div>";
+            pHtml += "<div style='font-size:11px;color:" + (p.ready ? "#4caf50" : "#ef5350") + ";'>" + (p.ready ? "✅ 已准备" : "⏳ 未准备") + "</div>";
         } else {
-            pHtml = "<div style='color:#555;padding:10px;'>绛夊緟鐜╁鍔犲叆...</div>";
+            pHtml = "<div style='color:#555;padding:10px;'>等待玩家加入...</div>";
         }
         d.innerHTML = pHtml;
         cont.appendChild(d);
@@ -1748,7 +1745,7 @@ function updatePvPRoomUI(players) {
     const readyBtn = document.getElementById("pvpReadyBtn");
     if (readyBtn) {
         const me = players?.find(p => p.name === myName);
-        readyBtn.textContent = me?.ready ? "鈴?鍙栨秷鍑嗗" : "鉁?鍑嗗";
+        readyBtn.textContent = me?.ready ? "⏸ 取消准备" : "✅ 准备";
     }
     const hostActions = document.getElementById("pvpHostActions");
     if (hostActions) {
@@ -1768,20 +1765,20 @@ function updatePvPRoomUI(players) {
 }
 
 // ============================================================
-//  鈽呪槄鈽?鏍稿績淇锛氬嚭鐗屾椂鏈湴鎵ц鏁堟灉 + 鍚屾鐘舵€?鈽呪槄鈽?
+//  ★★★ 核心修复：出牌时本地执行效果 + 同步状态 ★★★
 // ============================================================
 function handleCardClick(idx) {
     if (processing) return;
     if (!isPlayerTurn || gameOver || !player.alive || !pvpOpponent.alive) return;
     let maxPlays = 1;
-    if (player.heroKey === '鍙屽瓙搴? && player.cardsPlayedThisTurn < 2) maxPlays = 2;
-    if (player.cardsPlayedThisTurn >= maxPlays) { addLog('鉀?鏈洖鍚堝凡鍑虹墝'); return; }
+    if (player.heroKey === '双子座' && player.cardsPlayedThisTurn < 2) maxPlays = 2;
+    if (player.cardsPlayedThisTurn >= maxPlays) { addLog('⛔ 本回合已出牌'); return; }
     processing = true;
     try {
         const card = player.hand[idx];
         if (!card) { processing = false; return; }
 
-        // 1. 浠庢墜鐗岀Щ闄わ紝鍔犲叆寮冪墝鍫?
+        // 1. 从手牌移除，加入弃牌堆
         player.hand.splice(idx, 1);
         player.discard.push(card);
         player.cardsPlayedThisTurn++;
@@ -1789,17 +1786,17 @@ function handleCardClick(idx) {
         if (player.awakenProgress < 5) player.awakenProgress++;
 
         if (isPvPMode && pvpGameActive && ws) {
-            // 2. 鈽?鏈湴鎵ц鍗＄墝鏁堟灉 鈽?
+            // 2. ★ 本地执行卡牌效果 ★
             if (card.effect) {
                 card.effect(player, pvpOpponent);
             } else {
                 player.resolveEffect(card, pvpOpponent);
             }
-            // 3. 妫€鏌ユ父鎴忕粨鏉?
+            // 3. 检查游戏结束
             if (!pvpOpponent.alive) {
                 gameOver = true;
-                showGameOver("馃弳 鑳滃埄", "瀵规墜 HP 褰掗浂", "win");
-                // 鍙戦€佹父鎴忕粨鏉熸秷鎭?
+                showGameOver("🏆 胜利", "对手 HP 归零", "win");
+                // 发送游戏结束消息
                 ws.send(JSON.stringify({
                     type: 'game_action',
                     action: 'game_over',
@@ -1810,21 +1807,21 @@ function handleCardClick(idx) {
                 updateUI();
                 return;
             }
-            // 4. 鍙戦€佸畬鏁寸姸鎬佺粰瀵规墜
+            // 4. 发送完整状态给对手
             ws.send(JSON.stringify({
                 type: 'game_action',
                 action: 'play_card',
                 from: myName,
                 card: card,
                 data: {
-                    // 鍙戦€佺鐜╁鐘舵€?鈫?鎺ユ敹绔鎵?
+                    // 发送端玩家状态 → 接收端对手
                     playerHp: player.hp,
                     playerArmor: player.armor,
                     playerAlive: player.alive,
                     playerAwaken: player.awakenProgress,
                     playerHandCount: player.hand.length,
                     playerDiscardCount: player.discard.length,
-                    // 鍙戦€佺瀵规墜鐘舵€?鈫?鎺ユ敹绔帺瀹?
+                    // 发送端对手状态 → 接收端玩家
                     opponentHp: pvpOpponent.hp,
                     opponentArmor: pvpOpponent.armor,
                     opponentAlive: pvpOpponent.alive,
@@ -1834,10 +1831,10 @@ function handleCardClick(idx) {
                 }
             }));
             isPlayerTurn = false;
-            addLog('馃摛 宸插嚭鐗岋紝绛夊緟瀵规墜鍝嶅簲...');
+            addLog('📤 已出牌，等待对手响应...');
             updateUI();
         } else {
-            // 闈?PvP 妯″紡锛堝崟浜烘ā寮忥紝淇濈暀锛?
+            // 非 PvP 模式（单人模式，保留）
             if (card.effect) {
                 card.effect(player, pvpOpponent);
             } else {
@@ -1845,46 +1842,46 @@ function handleCardClick(idx) {
             }
             if (!pvpOpponent.alive) {
                 gameOver = true;
-                showGameOver("馃弳 鑳滃埄", "瀵规墜 HP 褰掗浂", "win");
+                showGameOver("🏆 胜利", "对手 HP 归零", "win");
             }
             updateUI();
         }
     } catch (e) {
-        console.error('鍑虹墝寮傚父:', e);
-        addLog('鉂?鍑虹墝寮傚父: ' + e.message);
+        console.error('出牌异常:', e);
+        addLog('❌ 出牌异常: ' + e.message);
     } finally {
         processing = false;
         updateUI();
     }
 }
 
-// ---------- 瑙夐啋锛圥vP 淇锛氭湰鍦版墽琛?+ 鍚屾锛?----------
+// ---------- 觉醒（PvP 修复：本地执行 + 同步） ----------
 function handleAwaken() {
     if (processing) return;
     if (!isPlayerTurn || gameOver) return;
-    if (player.awakenProgress < 5) { addLog('鉂?瑙夐啋杩涘害涓嶈冻 ('+player.awakenProgress+'/5)'); return; }
+    if (player.awakenProgress < 5) { addLog('❌ 觉醒进度不足 ('+player.awakenProgress+'/5)'); return; }
     processing = true;
     try {
         if (isPvPMode && pvpGameActive && ws) {
-            // 鏈湴鎵ц瑙夐啋
+            // 本地执行觉醒
             const hero = HEROES[player.heroKey];
             if (!hero.fn) { processing = false; return; }
             player.awakenProgress = 0;
             player.awakenUsed++;
             if (player._eventAwakenPenalty) {
                 player.takeDamage(player._eventAwakenPenalty, false);
-                addLog('鈿?娉曟湳鍙嶅櫖锛氳嚜韬彈鍒?+player._eventAwakenPenalty+'鐐逛激瀹?);
+                addLog('⚡ 法术反噬：自身受到'+player._eventAwakenPenalty+'点伤害');
             }
-            addLog('馃専 瑙夐啋锛?+hero.awaken);
+            addLog('🌟 觉醒：'+hero.awaken);
             hero.fn(player, pvpOpponent);
-            if (player.heroKey === 'ENFJ') { player.draw(); player.draw(); addLog('馃摎 ENFJ琚姩锛氳閱掑悗鎶?'); }
+            if (player.heroKey === 'ENFJ') { player.draw(); player.draw(); addLog('📚 ENFJ被动：觉醒后抽2'); }
             const stats = loadStats();
             stats.dailyAwaken = (stats.dailyAwaken || 0) + 1;
             saveStats(stats);
 
             if (!pvpOpponent.alive) {
                 gameOver = true;
-                showGameOver("馃弳 鑳滃埄", "瀵规墜 HP 褰掗浂", "win");
+                showGameOver("🏆 胜利", "对手 HP 归零", "win");
                 ws.send(JSON.stringify({
                     type: 'game_action',
                     action: 'game_over',
@@ -1896,7 +1893,7 @@ function handleAwaken() {
                 return;
             }
 
-            // 鍙戦€佽閱掔姸鎬?
+            // 发送觉醒状态
             ws.send(JSON.stringify({
                 type: 'game_action',
                 action: 'awaken',
@@ -1913,10 +1910,10 @@ function handleAwaken() {
                 }
             }));
             isPlayerTurn = false;
-            addLog('馃摛 瑙夐啋瀹屾垚锛岀瓑寰呭鎵?..');
+            addLog('📤 觉醒完成，等待对手...');
             updateUI();
         } else {
-            // 鍗曚汉妯″紡
+            // 单人模式
             const hero = HEROES[player.heroKey];
             if (hero.fn) {
                 player.awakenProgress = 0;
@@ -1925,55 +1922,55 @@ function handleAwaken() {
             }
         }
     } catch (e) {
-        console.error('瑙夐啋寮傚父:', e);
-        addLog('鉂?瑙夐啋寮傚父: ' + e.message);
+        console.error('觉醒异常:', e);
+        addLog('❌ 觉醒异常: ' + e.message);
     } finally {
         processing = false;
         updateUI();
     }
 }
 
-// ---------- 鏇存柊 UI ----------
+// ---------- 更新 UI ----------
 function updateUI() {
     if (!player || !pvpOpponent) return;
     const stats = loadStats();
-    // 鐜╁
+    // 玩家
     safeSetText('pHp', player.hp);
     safeSetText('pMaxHp', player.maxHp);
     safeSetText('pArmor', player.armor);
     safeSetText('pHeroType', player.heroKey);
     safeSetStyle('pHpFill', 'width', Math.max(0, (player.hp / player.maxHp * 100)) + '%');
-    safeSetText('pCardCount', '馃搳 宸插嚭鐗? '+player.totalCardsPlayed);
+    safeSetText('pCardCount', '📊 已出牌: '+player.totalCardsPlayed);
     safeSetText('pAwakenProgress', player.awakenProgress);
     const prof = stats.heroProficiency[player.heroKey] || { exp: 0, level: 1 };
-    safeSetText('heroLevelDisplay', '猸?Lv.'+prof.level);
+    safeSetText('heroLevelDisplay', '⭐ Lv.'+prof.level);
     safeSetText('currentCoins', stats.coins);
     safeSetText('totalCoins', stats.coins);
 
-    // 瀵规墜
+    // 对手
     safeSetText('oppHp', pvpOpponent.hp);
     safeSetText('oppMaxHp', pvpOpponent.maxHp);
     safeSetText('oppArmor', pvpOpponent.armor);
     safeSetText('oppHeroType', pvpOpponent.heroKey);
     safeSetStyle('oppHpFill', 'width', Math.max(0, (pvpOpponent.hp / pvpOpponent.maxHp * 100)) + '%');
-    safeSetText('oppCardCount', '馃搳 宸插嚭鐗? '+pvpOpponent.totalCardsPlayed);
+    safeSetText('oppCardCount', '📊 已出牌: '+pvpOpponent.totalCardsPlayed);
     const oppNameEl = document.getElementById('oppName');
-    if (oppNameEl) oppNameEl.innerHTML = '馃懁 ' + pvpOpponent.name + ' <span class="badge">'+pvpOpponent.heroKey+'</span>';
+    if (oppNameEl) oppNameEl.innerHTML = '👤 ' + pvpOpponent.name + ' <span class="badge">'+pvpOpponent.heroKey+'</span>';
 
-    // 鐜╁鎵嬬墝
+    // 玩家手牌
     const handDiv = document.getElementById('pHand');
     if (!handDiv) return;
     handDiv.innerHTML = '';
     if (player.hand.length === 0) {
-        handDiv.innerHTML = '<span style="color:#5a6a8a;padding:8px;">馃儚 鎵嬬墝涓虹┖</span>';
+        handDiv.innerHTML = '<span style="color:#5a6a8a;padding:8px;">🃏 手牌为空</span>';
     } else {
-        const maxPlays = (isPvPMode && pvpGameActive) ? 1 : (player.heroKey === '鍙屽瓙搴? ? 2 : 1);
+        const maxPlays = (isPvPMode && pvpGameActive) ? 1 : (player.heroKey === '双子座' ? 2 : 1);
         const canPlay = isPlayerTurn && !gameOver && player.cardsPlayedThisTurn < maxPlays && !processing && player.alive && pvpOpponent.alive;
         for (let i = 0; i < player.hand.length; i++) {
             const c = player.hand[i];
             const elem = c.element ? ELEMENTS[c.element] : null;
-            const elemIcon = elem ? elem.icon : '鉂?;
-            const elemName = elem ? elem.name : '鏃?;
+            const elemIcon = elem ? elem.icon : '❓';
+            const elemName = elem ? elem.name : '无';
             const elemClass = elem ? elem.class : '';
             const cardDiv = document.createElement('div');
             cardDiv.className = 'card ' + elemClass;
@@ -2003,34 +2000,34 @@ function updateUI() {
         }
     }
 
-    // 瀵规墜鎵嬬墝锛堜粎鏄剧ず鏁伴噺锛?
+    // 对手手牌（仅显示数量）
     const oppHand = document.getElementById('oppHand');
     if (oppHand) {
-        oppHand.innerHTML = '<span style="color:#6a7a9a;">馃儚 瀵规墜鎵嬬墝锛? + pvpOpponent.hand.length + ' 寮?/span>';
+        oppHand.innerHTML = '<span style="color:#6a7a9a;">🃏 对手手牌：' + pvpOpponent.hand.length + ' 张</span>';
     }
 
-    // 瑙夐啋鎸夐挳
+    // 觉醒按钮
     const awakenBtn = document.getElementById('btnAwaken');
     if (awakenBtn) {
         const canAwaken = isPlayerTurn && !gameOver && player.awakenProgress >= 5 && !processing && player.alive;
         awakenBtn.disabled = !canAwaken;
-        awakenBtn.textContent = canAwaken ? '馃専 瑙夐啋鎶€' : '馃専 瑙夐啋鎶€ ('+player.awakenProgress+'/5)';
+        awakenBtn.textContent = canAwaken ? '🌟 觉醒技' : '🌟 觉醒技 ('+player.awakenProgress+'/5)';
         awakenBtn.onclick = handleAwaken;
     }
 
-    // 鍥炲悎鏄剧ず
+    // 回合显示
     const turnDisplay = document.getElementById('turnDisplay');
     if (turnDisplay) {
-        if (gameOver) turnDisplay.textContent = '馃弫 娓告垙缁撴潫';
+        if (gameOver) turnDisplay.textContent = '🏁 游戏结束';
         else if (isPvPMode) {
-            turnDisplay.textContent = isPlayerTurn ? '馃懃 PvP 馃 浣犵殑鍥炲悎 (绗?'+turnCount+' 鍥炲悎)' : '馃懃 PvP 馃懁 瀵规墜鍥炲悎';
+            turnDisplay.textContent = isPlayerTurn ? '👥 PvP 🧑 你的回合 (第 '+turnCount+' 回合)' : '👥 PvP 👤 对手回合';
         } else {
-            turnDisplay.textContent = isPlayerTurn ? '馃 浣犵殑鍥炲悎' : '馃 瀵规墜鍥炲悎';
+            turnDisplay.textContent = isPlayerTurn ? '🧑 你的回合' : '🤖 对手回合';
         }
     }
 }
 
-// ---------- 鑻遍泟閫夋嫨 ----------
+// ---------- 英雄选择 ----------
 function renderHeroSelect() {
     const grid = document.getElementById('heroGrid');
     grid.innerHTML = '';
@@ -2042,12 +2039,12 @@ function renderHeroSelect() {
         card.innerHTML = `
             <img src="images/${key}.jpg" alt="${key}" class="havatar" onerror="this.style.display='none'">
             <div class="hname">${hero.name}</div>
-            <div class="htype">鉂わ笍 ${hero.hp} HP</div>
-            <div class="hdesc">琚姩锛?{hero.passive}</div>
-            <div class="hpassive">瑙夐啋锛?{hero.awaken}</div>
+            <div class="htype">❤️ ${hero.hp} HP</div>
+            <div class="hdesc">被动：${hero.passive}</div>
+            <div class="hpassive">觉醒：${hero.awaken}</div>
             <div style="margin-top:6px;">
-                <button class="story-btn" onclick="showHeroStory('${key}')">馃摉 鏁呬簨</button>
-                <button class="select-btn" onclick="selectHero('${key}')">閫夋嫨</button>
+                <button class="story-btn" onclick="showHeroStory('${key}')">📖 故事</button>
+                <button class="select-btn" onclick="selectHero('${key}')">选择</button>
             </div>
         `;
         grid.appendChild(card);
@@ -2056,7 +2053,7 @@ function renderHeroSelect() {
 
 function selectHero(key) {
     selectedHero = key;
-    document.getElementById('selected-hero-name').textContent = '馃懁 宸查€夛細'+key;
+    document.getElementById('selected-hero-name').textContent = '👤 已选：'+key;
     document.getElementById('confirm-btn').disabled = false;
     document.querySelectorAll('.hero-card').forEach(el => el.classList.remove('selected'));
     document.querySelectorAll('.hero-card').forEach(el => {
@@ -2066,7 +2063,7 @@ function selectHero(key) {
 }
 
 function showHeroStory(heroKey) {
-    const s = { title: '鑻遍泟鏁呬簨', quote: '...', story: '鏆傛棤璇︾粏鏁呬簨銆?, tags: ['猸?] };
+    const s = { title: '英雄故事', quote: '...', story: '暂无详细故事。', tags: ['⭐'] };
     document.getElementById('storyDetailTitle').textContent = heroKey;
     document.getElementById('storyDetailSubtitle').textContent = s.title;
     document.getElementById('storyDetailQuote').textContent = s.quote;
@@ -2074,7 +2071,7 @@ function showHeroStory(heroKey) {
     document.getElementById('storyDetailModal').classList.add('show');
 }
 
-// ---------- 妯℃€佹浜嬩欢 ----------
+// ---------- 模态框事件 ----------
 document.getElementById('storyModalClose').addEventListener('click', function() {
     document.getElementById('storyModal').classList.remove('show');
 });
@@ -2125,11 +2122,11 @@ document.getElementById('confirm-btn').addEventListener('click', function() {
     if (!selectedHero) return;
     if (gameMode === 'pvp') {
         myHeroPvp = selectedHero;
-        myName = "鐜╁" + Math.floor(Math.random() * 900 + 100);
+        myName = "玩家" + Math.floor(Math.random() * 900 + 100);
         document.getElementById('hero-select').style.display = 'none';
         connectPvP();
     } else {
-        alert('褰撳墠浠?PvP 妯″紡鍙敤锛岃閫夋嫨 PvP 瀵规垬銆?);
+        alert('当前仅 PvP 模式可用，请选择 PvP 对战。');
     }
 });
 
@@ -2137,9 +2134,9 @@ document.getElementById('next-btn').addEventListener('click', function() {
     document.getElementById('game-container').style.display = 'none';
     document.getElementById('hero-select').style.display = 'block';
     document.getElementById('game-over-overlay').classList.remove('show');
-    document.getElementById('logBox').innerHTML = '<div class="log-entry">馃幃 鏂板灞€锛岄€夋嫨鑻遍泟鍚э紒</div>';
+    document.getElementById('logBox').innerHTML = '<div class="log-entry">🎮 新对局，选择英雄吧！</div>';
     selectedHero = null;
-    document.getElementById('selected-hero-name').textContent = '馃懁 鏈€夋嫨';
+    document.getElementById('selected-hero-name').textContent = '👤 未选择';
     document.getElementById('confirm-btn').disabled = true;
     document.querySelectorAll('.hero-card').forEach(el => el.classList.remove('selected'));
     gameOver = false; isPlayerTurn = true; turnCount = 0; processing = false; player = null; pvpOpponent = null;
@@ -2147,23 +2144,23 @@ document.getElementById('next-btn').addEventListener('click', function() {
     if (ws) { ws.close(); ws = null; }
 });
 
-// 椤甸潰鍔犺浇
+// 页面加载
 window.onload = function() {
     renderHeroSelect();
     document.getElementById('modeNormal').classList.add('active');
     const stats = loadStats();
     safeSetText('totalCoins', stats.coins);
     safeSetText('currentCoins', stats.coins);
-    addLog('馃幃 娆㈣繋鏉ュ埌濉旂綏鍦ｆ垬锛?);
-    addLog('馃搵 璇烽€夋嫨鑻遍泟骞剁偣鍑?PvP 瀵规垬寮€濮嬪弻浜哄鎴樸€?);
-    console.log('鉁?PvP 鏁堟灉淇鐗堝凡鍔犺浇 鈥?鍗＄墝鏁堟灉鏈湴鎵ц + 鐘舵€佸悓姝?);
+    addLog('🎮 欢迎来到塔罗圣战！');
+    addLog('📋 请选择英雄并点击 PvP 对战开始双人对战。');
+    console.log('✅ PvP 效果修复版已加载 — 卡牌效果本地执行 + 状态同步');
 };
 
-// 鍏朵粬鎸夐挳锛堝崰浣嶏級
-document.getElementById('dailyTasksBtn').addEventListener('click', function() { alert('姣忔棩浠诲姟鍔熻兘鏈惎鐢?); });
-document.getElementById('deckEditBtn').addEventListener('click', function() { alert('鐗岀粍缂栬緫鍔熻兘鏈惎鐢?); });
-document.getElementById('achievementsBtn').addEventListener('click', function() { alert('鎴愬氨鍔熻兘鏈惎鐢?); });
-document.getElementById('storyModeBtn').addEventListener('click', function() { alert('鍓ф儏妯″紡鍔熻兘鏈惎鐢?); });
+// 其他按钮（占位）
+document.getElementById('dailyTasksBtn').addEventListener('click', function() { alert('每日任务功能未启用'); });
+document.getElementById('deckEditBtn').addEventListener('click', function() { alert('牌组编辑功能未启用'); });
+document.getElementById('achievementsBtn').addEventListener('click', function() { alert('成就功能未启用'); });
+document.getElementById('storyModeBtn').addEventListener('click', function() { alert('剧情模式功能未启用'); });
 </script>
 </body>
 </html>
